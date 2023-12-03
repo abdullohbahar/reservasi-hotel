@@ -1,0 +1,38 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+use Illuminate\Support\Facades\Schema;
+
+class CreateResepsionisTable extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('resepsionis', function (Blueprint $table) {
+            $table->id();
+            $table->string('nik', 20);
+            $table->string('nama', 30);
+            $table->string('alamat', 50);
+            $table->string('no_wa', 15);
+            $table->string('email', 20);
+            $table->text('password');
+
+            $table->timestamps();
+        });
+    }
+
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::dropIfExists('resepsionis');
+    }
+}
