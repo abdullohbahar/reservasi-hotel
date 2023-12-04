@@ -10,6 +10,7 @@
             <div class="container-fluid px-4">
                 <h1 class="mt-4 mb-4">Rerservasi Office</h1>
                 <form action="{{ url('storetamu/resepsionis') }}" method="POST">
+                    @csrf
                     <div class="row">
                         <div class="col-xl-8 col-md-6">
                             <div class="card">
@@ -29,7 +30,10 @@
                                     <label for="no_wa" class="form-label">No WhatsApp</label>
                                     <input type="text" class="form-control" name="no_wa">
                                 </div>
-
+                                <div class="mb-3">
+                                    <label for="email" class="form-label">Email</label>
+                                    <input type="text" class="form-control" name="email">
+                                </div>
                             </div>
                         </div>
                         <div class="col-xl-4 col-md-6">
@@ -39,39 +43,28 @@
                                     Kamar
                                 </h3>
                                 <div class="mb-4 text-center">
-                                    <form action="submit_form.php" method="post">
-                                        <label class="me-3 " for="datepicker">Check-In </label>
-                                        <input type="date" name="chekin">
-                                    </form>
+                                    <label class="me-3 " for="datepicker">Check-In </label>
+                                    <input type="date" name="checkin">
                                 </div>
                                 <div class="mb-4 text-center">
-                                    <form action="submit_form.php" method="post">
-                                        <label class="me-2" for="datepicker">Check-Out </label>
-                                        <input type="date" name="checkout">
-                                    </form>
+                                    <label class="me-2" for="datepicker">Check-Out </label>
+                                    <input type="date" name="checkout">
                                 </div>
-                                <select class="form-select" aria-label="Default select example">
+                                <select class="form-select" name="tipe_kamar" aria-label="Default select example"
+                                    id="tipeKamar">
                                     <option selected>Pilih Tipe Kamar</option>
                                     @foreach ($tipekamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>
                                     @endforeach
                                 </select>
-                                <fieldset disabled>
-                                    <div class="mt-4">
-                                        <label for="disabledTextInput" class="form-label">Status</label>
-                                        <input type="text" id="disabledTextInput" class="form-control"
-                                            placeholder="Free">
-                                    </div>
-                                    <div class="mt-4">
-                                        <label for="disabledTextInput" class="form-label">Total Biaya</label>
-                                        <input type="text" id="disabledTextInput" class="form-control"
-                                            placeholder="Rp 180.000">
-                                    </div>
-                                </fieldset>
+                                <div class="mt-4">
+                                    <label class="form-label">Total Biaya</label>
+                                    <input type="text" id="totalPrice" name="total_biaya" class="form-control" readonly
+                                        placeholder="Rp. 0">
+                                </div>
                                 <p class="mt-4 text-center">
-                                    <a class="btn btn-primary" href="">Reservasi</a>
+                                    <button type="submit" class="btn btn-primary" href="">Reservasi</button>
                                 </p>
-
                             </div>
                         </div>
                     </div>
@@ -80,3 +73,26 @@
         </main>
     </div>
 @endsection
+
+@push('addons-js')
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <script>
+        $("#tipeKamar").on("change", function() {
+            var id = $(this).val();
+
+            console.log(id)
+
+            $.ajax({
+                url: "/get-tipe-kamar-price/" + id,
+                method: 'GET',
+                dataType: 'JSON',
+                success: function(response) {
+                    console.log(response)
+                    $("#totalPrice").val(response.price);
+                }
+            })
+        })
+    </script>
+@endpush

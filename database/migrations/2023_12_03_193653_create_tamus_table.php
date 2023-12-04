@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreatePesanKamarsTable extends Migration
+class CreateTamusTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,15 @@ class CreatePesanKamarsTable extends Migration
      */
     public function up()
     {
-        Schema::create('pesan_kamars', function (Blueprint $table) {
+        Schema::create('tamus', function (Blueprint $table) {
             $table->id();
-            $table->date('checkin');
-            $table->date('checkout');
-            $table->integer('total_biaya');
-            $table->foreignId('tipe_kamar_id')->nullable()->constrained('tipe_kamars')->nullOnDelete();
+            $table->text('gambar');
+            $table->string('nik');
+            $table->string('nama');
+            $table->text('alamat');
+            $table->string('email');
+            $table->text('password');
+            $table->string('no_wa');
             $table->timestamps();
         });
     }
@@ -30,6 +33,6 @@ class CreatePesanKamarsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pesan_kamars');
+        Schema::dropIfExists('tamus');
     }
 }

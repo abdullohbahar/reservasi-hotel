@@ -19,7 +19,7 @@ class CreateResepsionisTable extends Migration
             $table->string('nama', 30);
             $table->string('alamat', 50);
             $table->string('no_wa', 15);
-            $table->string('email', 20);
+            $table->text('email');
             $table->text('password');
 
             $table->timestamps();

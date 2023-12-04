@@ -2,10 +2,15 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\TipeKamar;
+use App\Models\Tamu;
 use App\Models\User;
+use App\Models\Kamar;
+use App\Models\Reservasi;
+use App\Models\TipeKamar;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 
 class ResepsionisController extends Controller
 {
@@ -47,10 +52,73 @@ class ResepsionisController extends Controller
         ];
         return view('resepsionis/menu/daftar', $data);
     }
-    public function  rofpembayaran()
+    // simpan reservasi office
+    public function rofstore(Request $request)
+    {
+        // dd($request->all());
+
+        // Proses Tamu
+        $tamu = Tamu::create([
+            'gambar' => 'img/default.jpg',
+            'nik' => $request->nik,
+            'nama' => $request->nama,
+            'alamat' => "-",
+            'email' => $request->email,
+            'no_wa' => $request->no_wa,
+            'password' => Hash::make($request->email),
+        ]);
+
+        // Proses Reservasi
+        $lastBooking = Reservasi::orderBy('created_at', 'desc')->first();
+
+        if ($lastBooking) {
+            $lastNumber = (int) substr($lastBooking->no_booking, 0, 2);
+            $newNumber = str_pad($lastNumber + 1, 2, '0', STR_PAD_LEFT);
+        } else {
+            $newNumber = '01';
+        }
+
+        $currentDate = now();
+        $bookingNumber = $newNumber . '/' . $currentDate->format('d/m/Y');
+
+        $dataReservasi = [
+            'no_booking' => $bookingNumber,
+            'checkin' => $request->checkin,
+            'checkout' => $request->checkout,
+            'tamu_id' => $tamu->id,
+            'tipe_kamar_id' => $request->tipe_kamar,
+            'status' => 'full',
+            // 'resepsionis_id' => '1'
+        ];
+
+        // simpan data ke Reservasi table
+        $saveReservasi = Reservasi::create($dataReservasi);
+
+        Transaksi::create([
+            'tgl_transaksi' => now(),
+            'metode_pembayaran' => 'cash',
+            'total_biaya' => $request->total_biaya,
+            'reservasi_id' => $saveReservasi->id,
+            'tamu_id' => $tamu->id,
+        ]);
+
+        dd("berhasil");
+    }
+
+    public function GetTipeKamarPrice($id)
+    {
+        $tipe = TipeKamar::where('id', $id)->first();
+
+        return response()->json([
+            'price' => $tipe->harga
+        ]);
+    }
+
+    public function rofpembayaran()
     {
         return view('resepsionis/menu/pembayaran');
     }
+
     // Reservasi penyimpanan Office
     public function tamustore(Request $request)
     {

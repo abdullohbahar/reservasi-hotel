@@ -6,6 +6,7 @@ use App\Http\Controllers\DetailKamarController;
 use App\Http\Controllers\ResepsionisController;
 use App\Http\Controllers\TamuController;
 use App\Http\Controllers\UserController;
+use App\Models\Resepsionis;
 use Illuminate\Support\Facades\Route;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
@@ -96,4 +97,6 @@ Route::get('nobooking/resepsionis', [ResepsionisController::class, 'ronnobooking
 Route::get('daftar/resepsionis', [ResepsionisController::class, 'rofdaftar']);
 Route::get('pembayaran/resepsionis', [ResepsionisController::class, 'rofpembayaran']);
 // Reservasi Office Simpan
-Route::post('storetamu/resepsionis', [ResepsionisController::class, 'storekamar']);
+Route::post('storetamu/resepsionis', [ResepsionisController::class, 'rofstore']);
+
+Route::get('get-tipe-kamar-price/{id}', [ResepsionisController::class, 'GetTipeKamarPrice']);
