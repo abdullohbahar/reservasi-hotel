@@ -16,7 +16,7 @@
                                 Tambah Kamar
                             </h4>
                             <p class="mt-2">
-                                <select class="form-select" aria-label="Default select example">
+                                <select class="form-select" aria-label="Default select example" name="tipe_kamar_id">
                                     <option selected>Pilih Tipe Kamar</option>
                                     @foreach ($tipekamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>

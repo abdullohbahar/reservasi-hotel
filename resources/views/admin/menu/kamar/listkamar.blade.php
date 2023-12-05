@@ -14,22 +14,25 @@
                             <thead>
                                 <tr>
                                     <th>ID-Kamar</th>
+                                    <th>Gambar</th>
                                     <th>Tipe Kamar</th>
                                     <th>Nomor Kamar</th>
-                                    <th>Status</th>
-                                    <th>Check-In</th>
-                                    <th>Check-Out</th>
+                                    <th>Harga</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>AB-01</td>
-                                    <td>Tipe-A</td>
-                                    <td>A-01</td>
-                                    <td>Null</td>
-                                    <td>Null</td>
-                                    <td>Null</td>
-                                </tr>
+                                @foreach ($kamars as $kamar)
+                                    <tr>
+                                        <td>{{ $kamar->id }}</td>
+                                        <td>
+                                            <img src="{{ asset($kamar->gambar) }}" class="w-25" alt=""
+                                                srcset="">
+                                        </td>
+                                        <td>{{ $kamar->tipe_kamar }}</td>
+                                        <td>{{ $kamar->no_kamar }}</td>
+                                        <td>{{ $kamar->harga }}</td>
+                                    </tr>
+                                @endforeach
                             </tbody>
                         </table>
                     </div>

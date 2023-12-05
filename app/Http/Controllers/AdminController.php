@@ -82,7 +82,15 @@ class AdminController extends Controller
     // Kamar
     public function listkamar()
     {
-        return view('admin/menu/kamar/listkamar');
+        $kamar = Kamar::join('tipe_kamars', 'kamars.tipe_kamar_id', 'tipe_kamars.id')
+            ->select('tipe_kamars.*', 'kamars.*')
+            ->get();
+
+        $data = [
+            'kamars' => $kamar,
+        ];
+
+        return view('admin/menu/kamar/listkamar', $data);
     }
     public function editkamar()
     {
@@ -98,6 +106,7 @@ class AdminController extends Controller
     {
         $data = [
             'no_kamar' => $request->input('no_kamar'),
+            'tipe_kamar_id' => $request->input('tipe_kamar_id')
         ];
         Kamar::create($data);
         return redirect('listkamar/admin');
