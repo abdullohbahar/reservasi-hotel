@@ -37,8 +37,12 @@
     <header class="py-5 bg-warning">
         <div class="text-center my-5">
             <h1 class=" fs-3 fw-bolder mb-4">Selamat Datang</h1>
-            <img class="img-fluid rounded-circle mb-4" src="{{ url('Profil.jpeg') }}" alt="..." />
-            <p class=" mb-0">Yusuf Murwido Hutomo</p>
+            @php
+                $profile = session('user')->gambar ?? 'Profil.jpeg';
+            @endphp
+            <img class="img-fluid rounded-circle mb-4" style="width: 250px !important;" src="{{ url("$profile") }}"
+                alt="..." />
+            <p class=" mb-0">{{ session('user')->nama }}</p>
             <div class="mt-4">
 
                 <a href="" class="btn btn-primary" type="submit">Riwayat</a>

@@ -21,9 +21,6 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
 
 Route::get('tamu/detail', [DetailController::class, 'detailtamu']);
 Route::get('kamar/detail/{id}', [DetailController::class, 'detailkamar']);
@@ -70,12 +67,15 @@ Route::get('laporan/pendapatan/admin', [AdminController::class, 'pendapatanview'
 // Tamu Route :
 
 // Default
+Route::get('/', [TamuController::class, 'default']);
 Route::get('dashboard/tamudefault', [TamuController::class, 'default']);
 Route::get('pesankamar/tamudefault', [TamuController::class, 'pesankamardefault']);
 Route::get('pembayaran/tamudefault', [TamuController::class, 'pembayarandefault']);
 
 // User
 Route::get('profil/tamu', [TamuController::class, 'profil']);
+Route::put('ubahprofile/tamu/{id}', [TamuController::class, 'ubahProfile']);
+Route::put('ubahfoto/tamu/{id}', [TamuController::class, 'ubahFoto']);
 Route::get('dashboard/tamu', [TamuController::class, 'dashboard']);
 Route::get('pesankamar/tamu', [TamuController::class, 'pesankamar']);
 Route::get('pembayaran/tamu', [TamuController::class, 'pembayaran']);

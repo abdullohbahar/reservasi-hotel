@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Resepsionis;
+use App\Models\Tamu;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -30,16 +31,23 @@ class UserController extends Controller
             // aksi login dan redirect ke halaman resepsionis
             $request->session()->regenerate();
 
+            $request->session()->put('user', $resepsionis);
+
             return redirect('dashboard/resepsionis');
         }
 
-        $user = User::where('email', $email)->first();
+        $user = Tamu::where('email', $email)->first();
         if ($user && Hash::check($request->password, $user->password)) {
             // aksi login dan redirect ke halaman user
             $request->session()->regenerate();
 
+            $request->session()->put('user', $user);
+
+
             return redirect('dashboard/tamu');
         }
+
+        return redirect('login/user')->with('message', 'user tidak ditemukan');
     }
 
     public function daftaruserview()

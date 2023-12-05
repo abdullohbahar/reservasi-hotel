@@ -59,7 +59,7 @@ class ResepsionisController extends Controller
 
         // Proses Tamu
         $tamu = Tamu::create([
-            'gambar' => 'img/default.jpg',
+            'gambar' => 'Profile.jpeg',
             'nik' => $request->nik,
             'nama' => $request->nama,
             'alamat' => "-",
