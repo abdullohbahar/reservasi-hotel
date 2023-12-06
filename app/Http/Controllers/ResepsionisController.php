@@ -88,6 +88,7 @@ class ResepsionisController extends Controller
             'tamu_id' => $tamu->id,
             'tipe_kamar_id' => $request->tipe_kamar,
             'status' => 'full',
+            'kamar_id' => $request->id_kamar,
             // 'resepsionis_id' => '1'
         ];
 

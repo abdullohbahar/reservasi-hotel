@@ -78,6 +78,8 @@ Route::put('ubahprofile/tamu/{id}', [TamuController::class, 'ubahProfile']);
 Route::put('ubahfoto/tamu/{id}', [TamuController::class, 'ubahFoto']);
 Route::get('dashboard/tamu', [TamuController::class, 'dashboard']);
 Route::get('pesankamar/tamu', [TamuController::class, 'pesankamar']);
+Route::post('bookingkamar/tamu', [TamuController::class, 'bookingKamar']);
+Route::get('/cekkamartersedia/{checkin}/{checkout}/{tipeKamar}', [TamuController::class, 'cekKamarTersedia']);
 Route::get('pembayaran/tamu', [TamuController::class, 'pembayaran']);
 
 

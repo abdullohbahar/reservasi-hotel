@@ -38,17 +38,19 @@
                         </div>
                         <div class="col-xl-4 col-md-6">
                             <div class="card">
-
+                                <div class="alert alert-danger" role="alert" id="alert_full" hidden>
+                                    Kamar Dengan Tipe Yang Dipilih Sudah penuh, harap cari tipe yang lainnya !
+                                </div>
                                 <h3 class="mb-4 text-center">
                                     Kamar
                                 </h3>
                                 <div class="mb-4 text-center">
                                     <label class="me-3 " for="datepicker">Check-In </label>
-                                    <input type="date" name="checkin">
+                                    <input type="date" id="checkin" name="checkin">
                                 </div>
                                 <div class="mb-4 text-center">
                                     <label class="me-2" for="datepicker">Check-Out </label>
-                                    <input type="date" name="checkout">
+                                    <input type="date" id="checkout" name="checkout">
                                 </div>
                                 <select class="form-select" name="tipe_kamar" aria-label="Default select example"
                                     id="tipeKamar">
@@ -58,8 +60,13 @@
                                     @endforeach
                                 </select>
                                 <div class="mt-4">
+                                    <label class="form-label">Nomor Kamar</label>
+                                    <input type="no_kamar" id="no_kamar" name="no_kamar" class="form-control" readonly>
+                                </div>
+                                <input type="text" name="kamar_id" id="id_kamar" hidden>
+                                <div class="mt-4">
                                     <label class="form-label">Total Biaya</label>
-                                    <input type="text" id="totalPrice" name="total_biaya" class="form-control" readonly
+                                    <input type="text" id="total_biaya" name="total_biaya" class="form-control" readonly
                                         placeholder="Rp. 0">
                                 </div>
                                 <p class="mt-4 text-center">
@@ -81,18 +88,36 @@
     <script>
         $("#tipeKamar").on("change", function() {
             var id = $(this).val();
-
-            console.log(id)
+            var checkin = $("#checkin").val()
+            var checkout = $("#checkout").val()
 
             $.ajax({
-                url: "/get-tipe-kamar-price/" + id,
-                method: 'GET',
-                dataType: 'JSON',
+                url: "../cekkamartersedia/" + checkin + "/" + checkout + "/" + id,
+                method: "GET",
+                dataType: "JSON",
                 success: function(response) {
-                    console.log(response)
-                    $("#totalPrice").val(response.price);
+                    console.log(response);
+                    $("#no_kamar").val(response.nomor_kamar)
+                    $("#total_biaya").val(response.harga)
+                    $("#id_kamar").val(response.id_kamar)
+
+                    if (response.jumlah_kamar < 1) {
+                        $("#alert_full").attr("hidden", false)
+                    }
                 }
             })
+
+            // console.log(id)
+
+            // $.ajax({
+            //     url: "/get-tipe-kamar-price/" + id,
+            //     method: 'GET',
+            //     dataType: 'JSON',
+            //     success: function(response) {
+            //         console.log(response)
+            //         $("#totalPrice").val(response.price);
+            //     }
+            // })
         })
     </script>
 @endpush
