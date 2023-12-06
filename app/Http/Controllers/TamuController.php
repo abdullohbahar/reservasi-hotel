@@ -171,4 +171,20 @@ class TamuController extends Controller
     {
         return view('tamu/menu/pembayaran');
     }
+
+    public function riwayat()
+    {
+        $userID = session('user')->id;
+
+        $riwayat = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
+            ->select('tipe_kamars.tipe_kamar', 'tipe_kamars.harga', 'reservasis.*', 'kamars.no_kamar')
+            ->where('tamu_id', $userID)->get();
+
+        $data = [
+            'riwayat' => $riwayat
+        ];
+
+        return view('tamu/menu/riwayat', $data);
+    }
 }

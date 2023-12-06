@@ -81,6 +81,7 @@ Route::get('pesankamar/tamu', [TamuController::class, 'pesankamar']);
 Route::post('bookingkamar/tamu', [TamuController::class, 'bookingKamar']);
 Route::get('/cekkamartersedia/{checkin}/{checkout}/{tipeKamar}', [TamuController::class, 'cekKamarTersedia']);
 Route::get('pembayaran/tamu', [TamuController::class, 'pembayaran']);
+Route::get('riwayat/tamu', [TamuController::class, 'riwayat']);
 
 
 // Resepsionis Route

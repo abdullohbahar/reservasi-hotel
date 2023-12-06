@@ -45,7 +45,7 @@
             <p class=" mb-0">{{ session('user')->nama }}</p>
             <div class="mt-4">
 
-                <a href="" class="btn btn-primary" type="submit">Riwayat</a>
+                <a href="{{ url('riwayat/tamu') }}" class="btn btn-primary" type="submit">Riwayat</a>
                 <a href="{{ url('login/user') }}" class="btn btn-success" type="submit">Logout</a>
             </div>
         </div>
