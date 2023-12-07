@@ -6,6 +6,7 @@ use Carbon\Carbon;
 use App\Models\Tamu;
 use App\Models\Reservasi;
 use App\Models\TipeKamar;
+use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
@@ -114,7 +115,7 @@ class TamuController extends Controller
         $bookingNumber = $newNumber . '/' . $currentDate->format('d/m/Y');
 
         // save reservasi
-        Reservasi::create([
+        $reservasi = Reservasi::create([
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,
             'status' => 'pending',
@@ -124,7 +125,19 @@ class TamuController extends Controller
             'kamar_id' => $request->id_kamar,
         ]);
 
-        return redirect('pembayaran/tamu')->with('success', 'Berhasil Booking Kamar');
+        $transaksi = Transaksi::create([
+            'tgl_transaksi' => $currentDate,
+            'metode_pembayaran' => '-',
+            'total_biaya' => $request->total_biaya,
+            'reservasi_id' => $reservasi->id,
+            'tamu_id' => session('user')->id,
+            'bukti_pembayaran' => '-',
+            'status_pembayaran' => 'pending'
+        ]);
+
+        return redirect('riwayat/tamu')->with([
+            'success' => 'Berhasil Booking Kamar'
+        ]);
     }
     public function cekKamarTersedia($checkin, $checkout, $tipeKamar)
     {
@@ -167,9 +180,35 @@ class TamuController extends Controller
         ]);
     }
 
-    public function pembayaran()
+    public function pembayaran($id)
     {
-        return view('tamu/menu/pembayaran');
+        $transaksi = Transaksi::findorfail($id);
+
+        $data = [
+            'transaksi' => $transaksi
+        ];
+
+        return view('tamu/menu/pembayaran', $data);
+    }
+    public function simpanPembayaran(Request $request, $id)
+    {
+        $data = [
+            'metode_pembayaran' => $request->metode_pembayaran,
+            'status_pembayaran' => 'dibayar'
+        ];
+
+        $file = $request->file('bukti_pembayaran');
+        $filename = date('His') . "." . $file->getClientOriginalExtension();
+        $location = 'image/bukti-pembayaran/';
+        $filepath = $location . $filename;
+        $file->move($location, $filename);
+        $data['bukti_pembayaran'] = $filepath;
+
+        Transaksi::where('id', $id)->update($data);
+
+        return redirect('riwayat/tamu')->with([
+            'success' => 'Berhasil Melakukan Pembayaran'
+        ]);
     }
 
     public function riwayat()
@@ -178,8 +217,9 @@ class TamuController extends Controller
 
         $riwayat = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
             ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
-            ->select('tipe_kamars.tipe_kamar', 'tipe_kamars.harga', 'reservasis.*', 'kamars.no_kamar')
-            ->where('tamu_id', $userID)->get();
+            ->join('transaksis', 'reservasis.id', '=', 'transaksis.reservasi_id')
+            ->select('tipe_kamars.tipe_kamar', 'tipe_kamars.harga', 'reservasis.*', 'kamars.no_kamar', 'transaksis.status_pembayaran', 'transaksis.bukti_pembayaran', 'transaksis.id as transaksi_id')
+            ->where('reservasis.tamu_id', $userID)->get();
 
         $data = [
             'riwayat' => $riwayat

@@ -27,6 +27,7 @@
                                 <th>Tipe Kamar</th>
                                 <th>No Kamar</th>
                                 <th>Harga</th>
+                                <th>Status Pembayaran</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -49,6 +50,21 @@
                                     </td>
                                     <td>
                                         {{ $riwayat->harga }}
+                                    </td>
+                                    <td>
+                                        @if ($riwayat->status_pembayaran == 'pending')
+                                            {{ $riwayat->status_pembayaran }}
+                                            <a href="{{ url('pembayaran/tamu/' . $riwayat->transaksi_id) }}"
+                                                class="btn btn-warning pl-5">Bayar</a>
+                                        @elseif($riwayat->status_pembayaran == 'dibayar')
+                                            Sudah Dibayar <br>
+                                            <div class="btn-group" role="group" aria-label="Basic example">
+                                                <a href="{{ url($riwayat->bukti_pembayaran) }}" class="btn btn-success pl-5"
+                                                    target="_blank">Lihat
+                                                    Bukti Pembayaran</a>
+                                                <button type="button" class="btn btn-info">Unduh Struk Pembayaran</button>
+                                            </div>
+                                        @endif
                                     </td>
                                 </tr>
                             @endforeach

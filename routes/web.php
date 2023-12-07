@@ -80,7 +80,8 @@ Route::get('dashboard/tamu', [TamuController::class, 'dashboard']);
 Route::get('pesankamar/tamu', [TamuController::class, 'pesankamar']);
 Route::post('bookingkamar/tamu', [TamuController::class, 'bookingKamar']);
 Route::get('/cekkamartersedia/{checkin}/{checkout}/{tipeKamar}', [TamuController::class, 'cekKamarTersedia']);
-Route::get('pembayaran/tamu', [TamuController::class, 'pembayaran']);
+Route::get('pembayaran/tamu/{id}', [TamuController::class, 'pembayaran']);
+Route::put('simpanpembayaran/tamu/{id}', [TamuController::class, 'simpanPembayaran']);
 Route::get('riwayat/tamu', [TamuController::class, 'riwayat']);
 
 
