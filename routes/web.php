@@ -89,6 +89,7 @@ Route::get('riwayat/tamu', [TamuController::class, 'riwayat']);
 Route::get('dashboard/resepsionis', [ResepsionisController::class, 'index']);
 Route::get('absen/resepsionis', [ResepsionisController::class, 'absenresepsionis']);
 Route::get('list/resepsionis', [ResepsionisController::class, 'listtamukamar']);
+Route::get('konifrmasi-checkout/resepsionis/{id}', [ResepsionisController::class, 'checkout']);
 Route::get('laporan/resepsionis', [ResepsionisController::class, 'laporanresepsionis']);
 Route::get('profil/resepsionis', [ResepsionisController::class, 'profilresepsionis']);
 

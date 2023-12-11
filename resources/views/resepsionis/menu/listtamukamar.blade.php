@@ -9,62 +9,38 @@
             <div class="container-fluid px-4">
                 <h3 class="mt-4 mb-4">List Kamar</h3>
                 <div class="row">
-                    <div class="col-xl-8 col-md-6">
+                    <div class="col-xl-12 col-md-12">
                         <div class="card">
                             <table id="datatablesSimple">
                                 <thead>
                                     <tr>
-                                        <th>ID-Kamar</th>
+                                        <th>No</th>
                                         <th>Nomor Kamar</th>
                                         <th>Tipe Kamar</th>
                                         <th>Status</th>
                                         <th>Check-In</th>
                                         <th>Check-Out</th>
+                                        <th>Aksi</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>AB-01</td>
-                                        <td>A-01</td>
-                                        <td>Tipe-A</td>
-                                        <td>Null</td>
-                                        <td>Null</td>
-                                        <td>Null</td>
-                                    </tr>
+                                    <?php $no = 1; ?>
+                                    @foreach ($reservasi as $reservasi)
+                                        <tr>
+                                            <td>{{ $no++ }}</td>
+                                            <td>{{ $reservasi->no_kamar }}</td>
+                                            <td>{{ $reservasi->tipe_kamar }}</td>
+                                            <td>{{ $reservasi->status }}</td>
+                                            <td>{{ $reservasi->checkin }}</td>
+                                            <td>{{ $reservasi->checkout }}</td>
+                                            <td>
+                                                <button class="btn btn-warning" id="confirm"
+                                                    data-id="{{ $reservasi->id }}">Checkout</button>
+                                            </td>
+                                        </tr>
+                                    @endforeach
                                 </tbody>
                             </table>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card">
-                            <div class="text-center">
-                                <h6 class="mb-4">
-                                    Tamu Check-in
-                                </h6>
-                                <label for="no_booking" class="form-label">Nomor Booking</label>
-                                <input type="id" id="no_booking" class="form-control">
-                            </div>
-                            <div class=" mt-3 text-center">
-                                <p class="btn btn-primary">Check-In</p>
-                            </div>
-                        </div>
-                        <div class="card mt-5">
-                            <div class="text-center">
-                                <h6 class="mb-4">
-                                    Keterangan Tamu
-                                </h6>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Pilih Nomor Kamar</option>
-                                    <option value="1">Mr.A</option>
-                                    <option value="2">Mr.B</option>
-                                    <option value="3">Mr.C</option>
-                                </select>
-                            </div>
-                            <div class=" mt-3 text-center">
-                                <p class="mb-3">Pilih Konfirmasi</p>
-                                <a href="{{ url('tamu/detail') }}" class="btn btn-warning">Detail</a>
-                                <a href="" class="btn btn-success">Check-Out</a>
-                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,3 +48,50 @@
         </main>
     </div>
 @endsection
+
+@push('addons-js')
+    <script>
+        console.log("x")
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $("body").on("click", "#confirm", function() {
+            var id = $(this).data("id");
+
+            Swal.fire({
+                title: "Apakah anda yakin?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Konfirmasi!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../konifrmasi-checkout/resepsionis/' + id,
+                        method: "GET",
+                        dataType: "JSON",
+                        success: function(response) {
+                            if (response.status == 200) {
+                                Swal.fire({
+                                    title: "Berhasil!",
+                                    text: "Berhasil Konfirmasi Data.",
+                                    icon: "success"
+                                });
+
+                                setTimeout(() => {
+                                    window.location.href = ""
+                                }, 1000);
+
+                            }
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+@endpush
