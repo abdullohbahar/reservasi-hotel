@@ -35,11 +35,98 @@ class ResepsionisController extends Controller
     // Reservasi Online
     public function ronpesan()
     {
-        return view('resepsionis/menu/pesan');
+        $reservasi = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
+            ->join('transaksis', 'reservasis.id', '=', 'transaksis.reservasi_id')
+            ->join('tamus', 'tamus.id', '=', 'reservasis.tamu_id')
+            ->select(
+                'tipe_kamars.tipe_kamar',
+                'tipe_kamars.harga',
+                'reservasis.*',
+                'kamars.no_kamar',
+                'transaksis.status_pembayaran',
+                'transaksis.bukti_pembayaran',
+                'transaksis.id as transaksi_id',
+                'tamus.nama as nama_tamu',
+                'reservasis.status'
+            )
+            ->orderBy('reservasis.no_booking', 'desc')
+            ->get();
+
+        $data = [
+            'reservasi' => $reservasi
+        ];
+
+        return view('resepsionis/menu/pesan', $data);
     }
+    public function konfirmasi($id)
+    {
+        Transaksi::where('id', $id)->update([
+            'status_pembayaran' => 'pending'
+        ]);
+
+        Reservasi::where('id', $id)->update([
+            'status' => 'pending'
+        ]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'OK'
+        ]);
+    }
+    public function tolak(Request $request)
+    {
+        $id = $request->id;
+
+        Transaksi::where('id', $id)->update([
+            'status_pembayaran' => 'tolak'
+        ]);
+
+        Reservasi::where('id', $id)->update([
+            'status' => 'tolak',
+            'alasan' => $request->alasan
+        ]);
+
+        return redirect()->back()->with('success', 'Berhasil Menolak');
+    }
+
     public function ronnobooking()
     {
-        return view('resepsionis/menu/nobooking');
+        $reservasi = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
+            ->join('transaksis', 'reservasis.id', '=', 'transaksis.reservasi_id')
+            ->join('tamus', 'tamus.id', '=', 'reservasis.tamu_id')
+            ->select(
+                'tipe_kamars.tipe_kamar',
+                'tipe_kamars.harga',
+                'reservasis.*',
+                'kamars.no_kamar',
+                'transaksis.status_pembayaran',
+                'transaksis.bukti_pembayaran',
+                'transaksis.id as transaksi_id',
+                'tamus.nama as nama_tamu',
+                'reservasis.status'
+            )
+            ->where('reservasis.status', '=', 'pending')
+            ->orderBy('reservasis.no_booking', 'desc')
+            ->get();
+
+        $data = [
+            'reservasi' => $reservasi
+        ];
+
+        return view('resepsionis/menu/nobooking', $data);
+    }
+    public function konfirmasiNobooking($id)
+    {
+        Reservasi::where('id', $id)->update([
+            'status' => 'full'
+        ]);
+
+        return response()->json([
+            'status' => 200,
+            'message' => 'OK'
+        ]);
     }
 
 

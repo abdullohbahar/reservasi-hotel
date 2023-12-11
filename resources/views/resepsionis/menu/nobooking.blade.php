@@ -3,14 +3,13 @@
 @section('title')
 @endsection
 
-
 @section('content')
     <div id="layoutSidenav_content">
         <main>
             <div class="container-fluid px-4">
                 <h1 class="mt-4 mb-4">Nomor Booking</h1>
                 <div class="row">
-                    <div class="col-xl-8 col-md-6">
+                    <div class="col-xl-12 col-md-12">
                         <div class="card">
                             <div class="table-responsive">
                                 <table class="table table-hover dashboard-task-infos">
@@ -22,47 +21,32 @@
                                             <th>Check-In</th>
                                             <th>Check-Out</th>
                                             <th>Total Biaya</th>
+                                            <th>Aksi</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>AB-0001-CU</td>
-                                            <td>Yusuf Murwido Hutomo</td>
-                                            <td>Tipe-B</td>
-                                            <td>12-04-2023</td>
-                                            <td>12-06-2023</td>
-                                            <td>1800000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>AB-0002-CU</td>
-                                            <td>Adam Smith</td>
-                                            <td>Tipe-A</td>
-                                            <td>12-04-2023</td>
-                                            <td>12-08-2023</td>
-                                            <td>200000</td>
-                                        </tr>
+                                        @foreach ($reservasi as $reservasi)
+                                            <tr>
+                                                <td>{{ $reservasi->no_booking }}</td>
+                                                <td>{{ $reservasi->nama_tamu }}</td>
+                                                <td>{{ $reservasi->tipe_kamar }}</td>
+                                                <td>{{ $reservasi->checkin }}</td>
+                                                <td>{{ $reservasi->checkout }}</td>
+                                                <td>{{ $reservasi->harga }}</td>
+                                                <td>
+                                                    <div class="btn-group" role="group" aria-label="Basic example">
+                                                        <button type="button" class="btn btn-success" id="confirm"
+                                                            data-id="{{ $reservasi->id }}"
+                                                            {{ $reservasi->status == 'pending' ? '' : 'hidden' }}>Konfirmasi</button>
+                                                        <button type="button" class="btn btn-danger" id="tolak"
+                                                            {{ $reservasi->status == 'pending' ? '' : 'hidden' }}
+                                                            data-id="{{ $reservasi->id }}">Batal</button>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xl-4 col-md-6">
-                        <div class="card">
-                            <div class="text-center">
-                                <h6 class="mb-4">
-                                    Konfirmasi Tamu (Batal)
-                                </h6>
-                                <select class="form-select" aria-label="Default select example">
-                                    <option selected>Pilih Nama Tamu</option>
-                                    <option value="1">Mr.A</option>
-                                    <option value="2">Mr.B</option>
-                                    <option value="3">Mr.C</option>
-                                </select>
-                            </div>
-                            <div class=" mt-3 text-center">
-                                <p class="mb-3">Pilih Konfirmasi</p>
-                                <p class="btn btn-warning">Hapus</p>
-                                <p class="btn btn-secondary">Cancel</p>
                             </div>
                         </div>
                     </div>
@@ -71,3 +55,50 @@
         </main>
     </div>
 @endsection
+
+@push('addons-js')
+    <script>
+        console.log("x")
+    </script>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"
+        integrity="sha512-v2CJ7UaYy4JwqLDIrZUI/4hqeoQieOmAZNXBeQyjo21dadnwR+8ZaIJVT8EE2iyI61OV8e6M8PP2/4hpQINQ/g=="
+        crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+
+    <script>
+        $("body").on("click", "#confirm", function() {
+            var id = $(this).data("id");
+
+            Swal.fire({
+                title: "Apakah anda yakin?",
+                icon: "info",
+                showCancelButton: true,
+                confirmButtonColor: "#3085d6",
+                cancelButtonColor: "#d33",
+                confirmButtonText: "Ya, Konfirmasi!"
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    $.ajax({
+                        url: '../konfirmasi-nobooking/resepsions/' + id,
+                        method: "GET",
+                        dataType: "JSON",
+                        success: function(response) {
+                            if (response.status == 200) {
+                                Swal.fire({
+                                    title: "Berhasil!",
+                                    text: "Berhasil Konfirmasi Data.",
+                                    icon: "success"
+                                });
+
+                                setTimeout(() => {
+                                    window.location.href = ""
+                                }, 1000);
+
+                            }
+                        }
+                    })
+                }
+            });
+        })
+    </script>
+@endpush

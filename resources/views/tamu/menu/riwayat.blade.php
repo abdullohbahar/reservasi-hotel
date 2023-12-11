@@ -51,16 +51,21 @@
                                     <td>
                                         {{ $riwayat->harga }}
                                     </td>
-                                    <td>
-                                        @if ($riwayat->status_pembayaran == 'pending')
-                                            {{ $riwayat->status_pembayaran }}
+                                    <td class="text-capitalize">
+                                        @if ($riwayat->status_pembayaran == 'menunggu pembayaran')
+                                            {{ $riwayat->status_pembayaran }} <br>
                                             <a href="{{ url('pembayaran/tamu/' . $riwayat->transaksi_id) }}"
                                                 class="btn btn-warning pl-5">Bayar</a>
+                                        @elseif($riwayat->status_pembayaran == 'tolak')
+                                            Di{{ $riwayat->status_pembayaran }} <br>
+                                            Alasan: {{ $riwayat->alasan }} <br>
+                                            <a href="{{ url('pembayaran/tamu/' . $riwayat->transaksi_id) }}"
+                                                class="btn btn-warning pl-5">Upload Bukti Pembayaran</a>
                                         @elseif($riwayat->status_pembayaran == 'dibayar')
                                             Sudah Dibayar <br>
                                             <div class="btn-group" role="group" aria-label="Basic example">
-                                                <a href="{{ url($riwayat->bukti_pembayaran) }}" class="btn btn-success pl-5"
-                                                    target="_blank">Lihat
+                                                <a href="{{ url($riwayat->bukti_pembayaran) }}"
+                                                    class="btn btn-success pl-5" target="_blank">Lihat
                                                     Bukti Pembayaran</a>
                                                 <button type="button" class="btn btn-info">Unduh Struk Pembayaran</button>
                                             </div>

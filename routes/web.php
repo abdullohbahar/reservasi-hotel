@@ -86,7 +86,6 @@ Route::get('riwayat/tamu', [TamuController::class, 'riwayat']);
 
 
 // Resepsionis Route
-
 Route::get('dashboard/resepsionis', [ResepsionisController::class, 'index']);
 Route::get('absen/resepsionis', [ResepsionisController::class, 'absenresepsionis']);
 Route::get('list/resepsionis', [ResepsionisController::class, 'listtamukamar']);
@@ -95,7 +94,10 @@ Route::get('profil/resepsionis', [ResepsionisController::class, 'profilresepsion
 
 // Reservasi Online
 Route::get('pesan/resepsionis', [ResepsionisController::class, 'ronpesan']);
+Route::get('konfirmasi-pesan/resepsionis/{id}', [ResepsionisController::class, 'konfirmasi']);
+Route::post('tolak-pesan/resepsionis', [ResepsionisController::class, 'tolak']);
 Route::get('nobooking/resepsionis', [ResepsionisController::class, 'ronnobooking']);
+Route::get('konfirmasi-nobooking/resepsions/{id}', [ResepsionisController::class, 'konfirmasiNobooking']);
 
 // Reservasi Office
 Route::get('daftar/resepsionis', [ResepsionisController::class, 'rofdaftar']);

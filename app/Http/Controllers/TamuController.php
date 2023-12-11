@@ -118,7 +118,7 @@ class TamuController extends Controller
         $reservasi = Reservasi::create([
             'checkin' => $request->checkin,
             'checkout' => $request->checkout,
-            'status' => 'pending',
+            'status' => 'menunggu pembayaran',
             'no_booking' => $bookingNumber,
             'tipe_kamar_id' => $request->tipe_kamar_id,
             'tamu_id' => session('user')->id,
@@ -132,17 +132,18 @@ class TamuController extends Controller
             'reservasi_id' => $reservasi->id,
             'tamu_id' => session('user')->id,
             'bukti_pembayaran' => '-',
-            'status_pembayaran' => 'pending'
+            'status_pembayaran' => 'menunggu pembayaran'
         ]);
 
         return redirect('riwayat/tamu')->with([
-            'success' => 'Berhasil Booking Kamar'
+            'success' => 'Berhasil Booking Kamar, Harap Lakukan Pembayaran'
         ]);
     }
     public function cekKamarTersedia($checkin, $checkout, $tipeKamar)
     {
+        // menunggu pembayaran
         // dump($checkin, $checkout, $tipeKamar);
-        $reservasi = Reservasi::where('status', 'full')->get();
+        $reservasi = Reservasi::where('status', 'full')->orWhere('status', 'pending')->orWhere('status', 'menunggu pembayaran')->get();
 
         $dataTipeKamar = [];
         $dataKamar = [];
@@ -206,6 +207,11 @@ class TamuController extends Controller
 
         Transaksi::where('id', $id)->update($data);
 
+        Reservasi::where('id', $request->reservasi_id)->update([
+            'status' => 'menunggu pembayaran',
+            'alasan' => ''
+        ]);
+
         return redirect('riwayat/tamu')->with([
             'success' => 'Berhasil Melakukan Pembayaran'
         ]);
@@ -218,7 +224,16 @@ class TamuController extends Controller
         $riwayat = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
             ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
             ->join('transaksis', 'reservasis.id', '=', 'transaksis.reservasi_id')
-            ->select('tipe_kamars.tipe_kamar', 'tipe_kamars.harga', 'reservasis.*', 'kamars.no_kamar', 'transaksis.status_pembayaran', 'transaksis.bukti_pembayaran', 'transaksis.id as transaksi_id')
+            ->select(
+                'tipe_kamars.tipe_kamar',
+                'tipe_kamars.harga',
+                'reservasis.*',
+                'kamars.no_kamar',
+                'transaksis.status_pembayaran',
+                'transaksis.bukti_pembayaran',
+                'transaksis.id as transaksi_id',
+            )
+            ->orderBy('reservasis.no_booking', 'desc')
             ->where('reservasis.tamu_id', $userID)->get();
 
         $data = [

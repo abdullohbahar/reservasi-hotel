@@ -39,6 +39,7 @@
                         </div>
                         <div class="form-group mt-3">
                             <label>Pilih Bank</label>
+                            <input type="hidden" name="reservasi_id" value="{{ $transaksi->reservasi_id }}" id="">
                             <select name="metode_pembayaran" class="form-control" id="bank" required>
                                 <option value="">-- Pilih Bank --</option>
                                 <option value="BCA">BCA</option>
