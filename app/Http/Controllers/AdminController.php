@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamar;
+use App\Models\Presence;
 use App\Models\Resepsionis;
 use App\Models\TipeKamar;
 use Illuminate\Http\Request;
@@ -182,7 +183,20 @@ class AdminController extends Controller
     // Laporan
     public function absenview()
     {
-        return view('admin/menu/laporan/absen');
+        $presensi = Presence::join('resepsionis', 'presences.resepsionis_id', '=', 'resepsionis_id')
+            ->select(
+                'resepsionis.nama',
+                'presences.created_at as tanggal',
+                'presences.keterangan'
+            )
+            ->orderBy('resepsionis.nama', 'asc')
+            ->get();
+
+        $data = [
+            'presensi' => $presensi
+        ];
+
+        return view('admin/menu/laporan/absen', $data);
     }
     public function pendapatanview()
     {

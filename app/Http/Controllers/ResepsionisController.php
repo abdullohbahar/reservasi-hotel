@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Tamu;
 use App\Models\User;
 use App\Models\Kamar;
+use App\Models\Presence;
+use App\Models\Resepsionis;
 use App\Models\Reservasi;
 use App\Models\TipeKamar;
 use App\Models\Transaksi;
@@ -22,6 +24,15 @@ class ResepsionisController extends Controller
     public function absenresepsionis()
     {
         return view('resepsionis/menu/absen');
+    }
+    public function simpanabsen(Request $request)
+    {
+        Presence::create([
+            'resepsionis_id' => session('user')->id,
+            'keterangan' => $request->keterangan
+        ]);
+
+        return redirect()->back()->with('success', 'berhasil presensi');
     }
 
     public function listtamukamar()
