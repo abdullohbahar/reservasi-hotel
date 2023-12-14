@@ -92,6 +92,7 @@ Route::post('simpan-absen/resepsionis', [ResepsionisController::class, 'simpanab
 Route::get('list/resepsionis', [ResepsionisController::class, 'listtamukamar']);
 Route::get('konifrmasi-checkout/resepsionis/{id}', [ResepsionisController::class, 'checkout']);
 Route::get('laporan/resepsionis', [ResepsionisController::class, 'laporanresepsionis']);
+Route::post('simpan-pendapatan-lainnya/resepsionis', [ResepsionisController::class, 'simpanPendapatanLainnya']);
 Route::get('profil/resepsionis', [ResepsionisController::class, 'profilresepsionis']);
 
 // Reservasi Online

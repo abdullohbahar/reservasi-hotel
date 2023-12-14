@@ -20,7 +20,7 @@
                     <div class="col-12">
                         <div class="card">
                             <div class="card-header">
-                                <h3 class="card-title">Pendapatan</h3>
+                                <h3 class="card-title"><b>Pendapatan</b></h3>
                             </div>
                             <!-- /.card-header -->
                             <div class="card-body">
@@ -37,6 +37,39 @@
                                             <td>{{ $item->checkin }}</td>
                                             <td>{{ $item->tipe_kamar }}</td>
                                             <td>{{ $item->harga }}</td>
+                                        </tr>
+                                    @endforeach
+                                </table>
+                            </div>
+                            <!-- /.card-body -->
+                        </div>
+                    </div>
+                </div>
+                <div class="row mt-3">
+                    <div class="col-12">
+                        <div class="card">
+                            <div class="card-header">
+                                <h3 class="card-title"><b>Pendapatan Lainnya</b></h3>
+                            </div>
+                            <!-- /.card-header -->
+                            <div class="card-body">
+                                <table id="example2" class="table table-bordered table-striped">
+                                    <thead>
+                                        <tr>
+                                            <th>Tanggal</th>
+                                            <th>Keterangan</th>
+                                            <th>Total Biaya</th>
+                                            <th>Bukti</th>
+                                        </tr>
+                                    </thead>
+                                    @foreach ($pendapatanLainnya as $item)
+                                        <tr>
+                                            <td>{{ $item->tanggal }}</td>
+                                            <td>{{ $item->keterangan }}</td>
+                                            <td>{{ $item->total_biaya }}</td>
+                                            <td>
+                                                <a href="{{ asset($item->bukti) }}" class="btn btn-info">Lihat Bukti</a>
+                                            </td>
                                         </tr>
                                     @endforeach
                                 </table>
@@ -80,6 +113,17 @@
                 "responsive": true,
                 "buttons": ["copy", "csv", "excel", "pdf", "print"]
             }).buttons().container().appendTo('#example1_wrapper .col-md-6:eq(0)');
+
+            $("#example2").DataTable({
+                "paging": true,
+                "lengthChange": true,
+                "searching": true,
+                "ordering": true,
+                "info": true,
+                "autoWidth": true,
+                "responsive": true,
+                "buttons": ["copy", "csv", "excel", "pdf", "print"]
+            }).buttons().container().appendTo('#example2_wrapper .col-md-6:eq(0)');
         });
     </script>
 @endpush

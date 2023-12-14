@@ -6,11 +6,12 @@ use App\Models\Tamu;
 use App\Models\User;
 use App\Models\Kamar;
 use App\Models\Presence;
-use App\Models\Resepsionis;
 use App\Models\Reservasi;
 use App\Models\TipeKamar;
 use App\Models\Transaksi;
+use App\Models\Resepsionis;
 use Illuminate\Http\Request;
+use App\Models\PendapatanLainnya;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
 
@@ -76,7 +77,38 @@ class ResepsionisController extends Controller
 
     public function laporanresepsionis()
     {
-        return view('resepsionis/menu/laporan');
+        $reservasi = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->select('reservasis.checkin', 'tipe_kamars.harga', 'tipe_kamars.tipe_kamar')
+            ->where('reservasis.status', 'free')
+            ->orderBy('reservasis.checkin', 'desc')
+            ->get();
+
+        $pendapatanLainnya = PendapatanLainnya::orderBy('tanggal', 'desc')->get();
+
+        $data = [
+            'pendapatan' => $reservasi,
+            'pendapatanLainnya' => $pendapatanLainnya
+        ];
+
+        return view('resepsionis/menu/laporan', $data);
+    }
+    public function simpanPendapatanLainnya(Request $request)
+    {
+        $data = [
+            'keterangan' => $request->input('keterangan'),
+            'total_biaya' => $request->input('total_biaya'),
+            'tanggal' => date('Y-m-d'),
+        ];
+
+        $file = $request->file('bukti');
+        $filename = date('His') . "." . $file->getClientOriginalExtension();
+        $location = 'image/pendapatan-lainnya/';
+        $filepath = $location . $filename;
+        $file->move($location, $filename);
+        $data['bukti'] = $filepath;
+
+        PendapatanLainnya::create($data);
+        return redirect('laporan/resepsionis');
     }
 
     // Reservasi Online

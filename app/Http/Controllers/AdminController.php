@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Kamar;
+use App\Models\PendapatanLainnya;
 use App\Models\Presence;
 use App\Models\Resepsionis;
 use App\Models\Reservasi;
@@ -222,8 +223,11 @@ class AdminController extends Controller
             ->orderBy('reservasis.checkin', 'desc')
             ->get();
 
+        $pendapatanLainnya = PendapatanLainnya::orderBy('tanggal', 'desc')->get();
+
         $data = [
-            'pendapatan' => $reservasi
+            'pendapatan' => $reservasi,
+            'pendapatanLainnya' => $pendapatanLainnya
         ];
 
         return view('admin/menu/laporan/pendapatans', $data);
