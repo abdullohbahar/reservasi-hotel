@@ -17,6 +17,21 @@ use Illuminate\Support\Facades\Hash;
 
 class ResepsionisController extends Controller
 {
+    public function __construct()
+    {
+        $this->middleware(function ($request, $next) {
+            if (session('role') == 'Admin') {
+                return redirect('dashboard/admin');
+            } else if (session('role') == 'Resepsionis') {
+                return $next($request);
+            } else if (session('role') == 'Tamu') {
+                return redirect('dashboard/tamu');
+            } else {
+                return redirect('dashboard/tamudefault');
+            }
+        });
+    }
+
     // Main Menu
     public function index()
     {

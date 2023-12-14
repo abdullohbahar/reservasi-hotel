@@ -16,17 +16,17 @@ class AdminController extends Controller
 {
     public function __construct()
     {
-        // $this->middleware(function ($request, $next) {
-        // if (session('role') == 'Admin') {
-        //     return $next($request);
-        // } else if (session('role') == 'Resepsionis') {
-        //     return redirect('dashboard/resepsionis');
-        // } else if (session('role') == 'Tamu') {
-        //     return redirect('dashboard/tamu');
-        // } else {
-        //     return redirect('dashboard/tamudefault');
-        // }
-        // });
+        $this->middleware(function ($request, $next) {
+            if (session('role') == 'Admin') {
+                return $next($request);
+            } else if (session('role') == 'Resepsionis') {
+                return redirect('dashboard/resepsionis');
+            } else if (session('role') == 'Tamu') {
+                return redirect('dashboard/tamu');
+            } else {
+                return redirect('dashboard/tamudefault');
+            }
+        });
     }
 
     // Dashboard Admin :

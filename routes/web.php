@@ -5,6 +5,7 @@ use App\Http\Controllers\DetailController;
 use App\Http\Controllers\DetailKamarController;
 use App\Http\Controllers\ResepsionisController;
 use App\Http\Controllers\TamuController;
+use App\Http\Controllers\TamuDefaultController;
 use App\Http\Controllers\UserController;
 use App\Models\Resepsionis;
 use Illuminate\Support\Facades\Route;
@@ -22,11 +23,13 @@ use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 */
 
 
+
 Route::get('tamu/detail', [DetailController::class, 'detailtamu']);
 Route::get('kamar/detail/{id}', [DetailController::class, 'detailkamar']);
 
 // User Route
 Route::get('login/user', [UserController::class, 'index']);
+Route::get('logout', [UserController::class, 'logout']);
 Route::post('aksilogin/user', [UserController::class, 'aksilogin']);
 Route::get('daftar/user', [UserController::class, 'daftaruserview']);
 Route::get('lupapassword/user', [UserController::class, 'lupapasswordview']);
@@ -67,10 +70,10 @@ Route::get('laporan/pendapatan/admin', [AdminController::class, 'pendapatanview'
 // Tamu Route :
 
 // Default
-Route::get('/', [TamuController::class, 'default']);
-Route::get('dashboard/tamudefault', [TamuController::class, 'default']);
-Route::get('pesankamar/tamudefault', [TamuController::class, 'pesankamardefault']);
-Route::get('pembayaran/tamudefault', [TamuController::class, 'pembayarandefault']);
+Route::get('/', [TamuDefaultController::class, 'default']);
+Route::get('dashboard/tamudefault', [TamuDefaultController::class, 'default']);
+Route::get('pesankamar/tamudefault', [TamuDefaultController::class, 'pesankamardefault']);
+Route::get('pembayaran/tamudefault', [TamuDefaultController::class, 'pembayarandefault']);
 
 // User
 Route::get('profil/tamu', [TamuController::class, 'profil']);

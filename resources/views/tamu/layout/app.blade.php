@@ -46,7 +46,7 @@
             <div class="mt-4">
 
                 <a href="{{ url('riwayat/tamu') }}" class="btn btn-primary" type="submit">Riwayat</a>
-                <a href="{{ url('login/user') }}" class="btn btn-success" type="submit">Logout</a>
+                <a href="{{ url('logout') }}" class="btn btn-success" type="submit">Logout</a>
             </div>
         </div>
 

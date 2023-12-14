@@ -13,18 +13,19 @@ use Illuminate\Support\Facades\Hash;
 
 class TamuController extends Controller
 {
-    // tamu default
-    public function default()
+    public function __construct()
     {
-        return view('tamu/menu/defaultdashboard');
-    }
-    public function pesankamardefault()
-    {
-        return view('tamu/menu/defaultpesankamar');
-    }
-    public function pembayarandefault()
-    {
-        return view('tamu/menu/defaultpembayaran');
+        $this->middleware(function ($request, $next) {
+            if (session('role') == 'Admin') {
+                return redirect('dashboard/admin');
+            } else if (session('role') == 'Resepsionis') {
+                return redirect('dashboard/resepsionis');
+            } else if (session('role') == 'Tamu') {
+                return $next($request);
+            } else {
+                return redirect('dashboard/tamudefault');
+            }
+        });
     }
 
     // tamu user

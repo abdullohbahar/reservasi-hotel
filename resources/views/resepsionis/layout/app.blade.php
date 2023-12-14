@@ -94,7 +94,7 @@
                 <div class="sidenav-footer text-center mb-4">
                     <i class="fas fa-sign-out-alt fa-lg" style="color: #030000;"></i>
                     <p>
-                        <a href="{{ url('login/user') }}" class="text-dark">Logout</a>
+                        <a href="{{ url('logout') }}" class="text-dark">Logout</a>
                     </p>
                 </div>
             </nav>

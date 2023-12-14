@@ -69,6 +69,15 @@ class UserController extends Controller
         return redirect('login/user')->with('message', 'user tidak ditemukan');
     }
 
+    public function logout(Request $request)
+    {
+        $request->session()->invalidate();
+
+        $request->session()->regenerateToken();
+
+        return redirect('login/user')->with('success', 'Logout Successfully');
+    }
+
     public function daftaruserview()
     {
         return view('user/menu/daftar');
