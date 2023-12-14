@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Admin;
 use App\Models\Resepsionis;
 use App\Models\Tamu;
 use App\Models\User;
@@ -31,6 +32,8 @@ class UserController extends Controller
             // aksi login dan redirect ke halaman resepsionis
             $request->session()->regenerate();
 
+            $request->session()->put("role", 'Resepsionis');
+
             $request->session()->put('user', $resepsionis);
 
             return redirect('dashboard/resepsionis');
@@ -41,11 +44,27 @@ class UserController extends Controller
             // aksi login dan redirect ke halaman user
             $request->session()->regenerate();
 
+            $request->session()->put("role", 'Tamu');
+
             $request->session()->put('user', $user);
 
 
             return redirect('dashboard/tamu');
         }
+
+        $admin = Admin::where('email', $email)->first();
+        if ($admin && Hash::check($request->password, $admin->password)) {
+            // aksi login dan redirect ke halaman user
+            $request->session()->regenerate();
+
+            $request->session()->put("role", 'Admin');
+
+            $request->session()->put('user', $user);
+
+
+            return redirect('dashboard/admin');
+        }
+
 
         return redirect('login/user')->with('message', 'user tidak ditemukan');
     }
