@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Kamar;
 use App\Models\Presence;
 use App\Models\Resepsionis;
+use App\Models\Reservasi;
 use App\Models\TipeKamar;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
@@ -215,6 +216,16 @@ class AdminController extends Controller
     }
     public function pendapatanview()
     {
-        return view('admin/menu/laporan/pendapatan');
+        $reservasi = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->select('reservasis.checkin', 'tipe_kamars.harga', 'tipe_kamars.tipe_kamar')
+            ->where('reservasis.status', 'free')
+            ->orderBy('reservasis.checkin', 'desc')
+            ->get();
+
+        $data = [
+            'pendapatan' => $reservasi
+        ];
+
+        return view('admin/menu/laporan/pendapatans', $data);
     }
 }
