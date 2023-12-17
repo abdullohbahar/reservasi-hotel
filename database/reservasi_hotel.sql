@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Dec 11, 2023 at 05:45 PM
+-- Generation Time: Dec 14, 2023 at 05:58 AM
 -- Server version: 8.0.30
 -- PHP Version: 7.4.33
 
@@ -35,6 +35,13 @@ CREATE TABLE `admins` (
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `admins`
+--
+
+INSERT INTO `admins` (`id`, `username`, `email`, `password`, `created_at`, `updated_at`) VALUES
+(1, 'admin', 'admin@gmail.com', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -103,7 +110,9 @@ INSERT INTO `migrations` (`id`, `migration`, `batch`) VALUES
 (9, '2023_12_03_194052_create_transaksis_table', 1),
 (10, '2023_12_03_194216_create_admins_table', 1),
 (11, '2023_12_06_023017_add_kamar_id_to_reservasis_table', 2),
-(12, '2023_12_07_232335_add_bukti_pembayaran_to_transaksi_table', 3);
+(12, '2023_12_07_232335_add_bukti_pembayaran_to_transaksi_table', 3),
+(13, '2023_12_13_103546_create_presences_table', 4),
+(14, '2023_12_14_051108_create_pendapatan_lainnyas_table', 5);
 
 -- --------------------------------------------------------
 
@@ -116,6 +125,50 @@ CREATE TABLE `password_resets` (
   `token` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `created_at` timestamp NULL DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `pendapatan_lainnyas`
+--
+
+CREATE TABLE `pendapatan_lainnyas` (
+  `id` bigint UNSIGNED NOT NULL,
+  `tanggal` date NOT NULL,
+  `keterangan` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `bukti` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `total_biaya` int NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `pendapatan_lainnyas`
+--
+
+INSERT INTO `pendapatan_lainnyas` (`id`, `tanggal`, `keterangan`, `bukti`, `total_biaya`, `created_at`, `updated_at`) VALUES
+(1, '2023-12-14', 'Beli', 'image/pendapatan-lainnya/054545.jpg', 1000000, '2023-12-13 22:45:45', '2023-12-13 22:45:45');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `presences`
+--
+
+CREATE TABLE `presences` (
+  `id` bigint UNSIGNED NOT NULL,
+  `resepsionis_id` bigint UNSIGNED DEFAULT NULL,
+  `keterangan` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `created_at` timestamp NULL DEFAULT NULL,
+  `updated_at` timestamp NULL DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+
+--
+-- Dumping data for table `presences`
+--
+
+INSERT INTO `presences` (`id`, `resepsionis_id`, `keterangan`, `created_at`, `updated_at`) VALUES
+(1, 2, 'Masuk', '2023-12-13 13:32:16', '2023-12-13 13:32:16');
 
 -- --------------------------------------------------------
 
@@ -311,6 +364,19 @@ ALTER TABLE `password_resets`
   ADD KEY `password_resets_email_index` (`email`);
 
 --
+-- Indexes for table `pendapatan_lainnyas`
+--
+ALTER TABLE `pendapatan_lainnyas`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `presences`
+--
+ALTER TABLE `presences`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `presences_resepsionis_id_foreign` (`resepsionis_id`);
+
+--
 -- Indexes for table `resepsionis`
 --
 ALTER TABLE `resepsionis`
@@ -361,7 +427,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `admins`
 --
 ALTER TABLE `admins`
-  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `failed_jobs`
@@ -379,7 +445,19 @@ ALTER TABLE `kamars`
 -- AUTO_INCREMENT for table `migrations`
 --
 ALTER TABLE `migrations`
-  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
+  MODIFY `id` int UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=15;
+
+--
+-- AUTO_INCREMENT for table `pendapatan_lainnyas`
+--
+ALTER TABLE `pendapatan_lainnyas`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+
+--
+-- AUTO_INCREMENT for table `presences`
+--
+ALTER TABLE `presences`
+  MODIFY `id` bigint UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `resepsionis`
@@ -426,6 +504,12 @@ ALTER TABLE `users`
 --
 ALTER TABLE `kamars`
   ADD CONSTRAINT `kamars_tipe_kamar_id_foreign` FOREIGN KEY (`tipe_kamar_id`) REFERENCES `tipe_kamars` (`id`) ON DELETE SET NULL;
+
+--
+-- Constraints for table `presences`
+--
+ALTER TABLE `presences`
+  ADD CONSTRAINT `presences_resepsionis_id_foreign` FOREIGN KEY (`resepsionis_id`) REFERENCES `resepsionis` (`id`) ON DELETE SET NULL;
 
 --
 -- Constraints for table `reservasis`

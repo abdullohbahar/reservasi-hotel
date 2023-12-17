@@ -269,7 +269,7 @@ class ResepsionisController extends Controller
             'tamu_id' => $tamu->id,
             'tipe_kamar_id' => $request->tipe_kamar,
             'status' => 'full',
-            'kamar_id' => $request->id_kamar,
+            'kamar_id' => $request->kamar_id,
             // 'resepsionis_id' => '1'
         ];
 
@@ -284,7 +284,7 @@ class ResepsionisController extends Controller
             'tamu_id' => $tamu->id,
         ]);
 
-        dd("berhasil");
+        return redirect()->back()->with('success', 'Berhasil');
     }
 
     public function GetTipeKamarPrice($id)
@@ -326,5 +326,10 @@ class ResepsionisController extends Controller
     public function detailtamu()
     {
         return view('resepsionis/layout/detailtamu');
+    }
+
+    public function tambahPendapatanLainnya()
+    {
+        return view('resepsionis.menu.pendapatanlainnya');
     }
 }

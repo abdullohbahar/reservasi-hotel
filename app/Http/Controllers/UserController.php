@@ -66,7 +66,7 @@ class UserController extends Controller
         }
 
 
-        return redirect('login/user')->with('message', 'user tidak ditemukan');
+        return redirect('login/user')->with('error', '');
     }
 
     public function logout(Request $request)
@@ -94,11 +94,12 @@ class UserController extends Controller
             'nama' => $request->input('nama'),
             'no_wa' => $request->input('no_wa'),
             'email' => $request->input('email'),
+            'alamat' => $request->input('alamat'),
             'password' => Hash::make($request->input('password')),
             'gambar' => 'Profil.jpeg'
         ];
 
-        User::create($data);
-        return redirect('login/user');
+        Tamu::create($data);
+        return redirect('login/user')->with('success', '');
     }
 }

@@ -85,6 +85,8 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{{ url('absen/resepsionis') }}">Absen</a>
                                 <a class="nav-link" href="{{ url('list/resepsionis') }}">List Tamu Kamar</a>
+                                <a class="nav-link" href="{{ url('pendapatan-lainnya/resepsionis') }}">Tambah Pendapatan
+                                    Lainnya</a>
                             </nav>
                         </div>
                         <a class="nav-link px-4" href="{{ url('laporan/resepsionis') }}">Laporan</a>
@@ -112,6 +114,50 @@
         crossorigin="anonymous"></script>
     <script src="{{ asset('admin-assets/js/datatables-simple-demo.js') }}"></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session()->has('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            })
+        </script>
+    @endif
+
+    @if (session()->has('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: '{{ session('error') }}'
+            })
+        </script>
+    @endif
 
     @stack('addons-js')
 </body>

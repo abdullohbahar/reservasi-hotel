@@ -18,26 +18,35 @@
                     <form action="{{ url('userstore/tamu') }}" method="POST">
                         @csrf
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="nik" id="nik" placeholder="nik">
+                            <input type="text" class="form-control" name="nik" id="nik" placeholder="nik"
+                                required>
                             <label for="nik">NIK</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="nama" id="nama" placeholder="nama">
+                            <input type="text" class="form-control" name="nama" id="nama" placeholder="nama"
+                                required>
                             <label for="nama">Nama Lengkap</label>
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="no_wa" id="no_wa" placeholder="no_wa">
+                            <input type="text" class="form-control" name="no_wa" id="no_wa" placeholder="no_wa"
+                                required>
                             <label for="no_wa">No WhatsApps</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="email">
+                            <input type="text" class="form-control" name="alamat" id="alamat" placeholder="alamat"
+                                required>
+                            <label for="alamat">Alamat</label>
+                        </div>
+                        <div class="form-floating mb-4">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="email"
+                                required>
                             <label for="email">Email</label>
                         </div>
                         <div class="form-floating mb-4">
                             <input type="password" class="form-control" name="password" id="password"
-                                placeholder="password">
+                                placeholder="password" required>
                             <label for="password">Password</label>
                         </div>
                         <p class="text-center mb-4">Sudah Punya Akun? <a href="{{ url('login/user') }}">Login</a></p>

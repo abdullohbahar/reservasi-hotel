@@ -28,7 +28,6 @@
                     <li class="nav-item"><a class="nav-link" href="{{ url('profil/tamu') }}">Profil</a></li>
                     <li class="nav-item"><a class="nav-link" href="{{ url('pesankamar/tamu') }}">Pesan Kamar</a>
                     </li>
-                    <li class="nav-item"><a class="nav-link" href="{{ url('pembayaran/tamu') }}">Pembayaran</a></li>
                 </ul>
             </div>
         </div>
@@ -79,6 +78,50 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"></script>
     <!-- Core theme JS-->
     <script src="{{ asset('landing-assets/js/scripts.js') }}"></script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+    @if (session()->has('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            })
+        </script>
+    @endif
+
+    @if (session()->has('error'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'error',
+                title: '{{ session('error') }}'
+            })
+        </script>
+    @endif
 
     @stack('addons-js')
 </body>

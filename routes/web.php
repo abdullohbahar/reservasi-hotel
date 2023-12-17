@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminController;
+use App\Http\Controllers\CekKamarController;
 use App\Http\Controllers\DetailController;
 use App\Http\Controllers\DetailKamarController;
 use App\Http\Controllers\ResepsionisController;
@@ -82,7 +83,7 @@ Route::put('ubahfoto/tamu/{id}', [TamuController::class, 'ubahFoto']);
 Route::get('dashboard/tamu', [TamuController::class, 'dashboard']);
 Route::get('pesankamar/tamu', [TamuController::class, 'pesankamar']);
 Route::post('bookingkamar/tamu', [TamuController::class, 'bookingKamar']);
-Route::get('/cekkamartersedia/{checkin}/{checkout}/{tipeKamar}', [TamuController::class, 'cekKamarTersedia']);
+Route::get('/cekkamartersedia/{checkin}/{checkout}/{tipeKamar}', CekKamarController::class);
 Route::get('pembayaran/tamu/{id}', [TamuController::class, 'pembayaran']);
 Route::put('simpanpembayaran/tamu/{id}', [TamuController::class, 'simpanPembayaran']);
 Route::get('riwayat/tamu', [TamuController::class, 'riwayat']);
@@ -112,3 +113,4 @@ Route::get('pembayaran/resepsionis', [ResepsionisController::class, 'rofpembayar
 Route::post('storetamu/resepsionis', [ResepsionisController::class, 'rofstore']);
 
 Route::get('get-tipe-kamar-price/{id}', [ResepsionisController::class, 'GetTipeKamarPrice']);
+Route::get('pendapatan-lainnya/resepsionis', [ResepsionisController::class, 'tambahPendapatanLainnya']);

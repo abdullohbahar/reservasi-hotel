@@ -17,12 +17,23 @@
                             </a>
                             <h5>Login</h5>
                         </div>
+                        @if (session()->has('error'))
+                            <div class="alert alert-danger" role="alert">
+                                Email / Password Salah
+                            </div>
+                        @endif
+                        @if (session()->has('success'))
+                            <div class="alert alert-success" role="alert">
+                                Silahkan Melakukan Login
+                            </div>
+                        @endif
                         <div class="form-floating mb-3">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="email">
+                            <input type="email" class="form-control" name="email" id="email" placeholder="email"
+                                required>
                             <label for="email">Email</label>
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="password" id="password"
+                            <input type="password" class="form-control" name="password" id="password" required
                                 placeholder="password">
                             <label for="password">Password</label>
                         </div>

@@ -91,6 +91,8 @@
             var checkin = $("#checkin").val()
             var checkout = $("#checkout").val()
 
+            console.log("asdf")
+
             $.ajax({
                 url: "../cekkamartersedia/" + checkin + "/" + checkout + "/" + id,
                 method: "GET",

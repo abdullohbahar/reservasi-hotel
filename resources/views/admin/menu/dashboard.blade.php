@@ -47,8 +47,9 @@
                                 <i class="fas fa-chart-pie me-1"></i>
                                 Tipe Kamar (Bulan ini)
                             </div>
-                            <div class="card-body"><canvas id="myPieChart" width="100%" height="50"></canvas></div>
-                            <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+                            <div class="card-body">
+                                <div id="chartContainer" style="height: 370px; width: 100%;"></div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -56,3 +57,48 @@
         </main>
     </div>
 @endsection
+
+@push('addons-js')
+    <script src="https://canvasjs.com/assets/script/jquery-1.11.1.min.js"></script>
+    <script src="https://cdn.canvasjs.com/jquery.canvasjs.min.js"></script>
+
+    <script>
+        window.onload = function() {
+
+            var options = {
+                title: {
+                    text: "Pendapatan Tipe Kamar"
+                },
+                animationEnabled: true,
+                data: [{
+                    type: "pie",
+                    startAngle: 40,
+                    toolTipContent: "<b>{label}</b>: {y}%",
+                    showInLegend: "true",
+                    legendText: "{label}",
+                    indexLabelFontSize: 16,
+                    indexLabel: "{label} - {y}%",
+                    dataPoints: [{
+                            y: 48.36,
+                            label: "Tipe A"
+                        },
+                        {
+                            y: 26.85,
+                            label: "Tipe B"
+                        },
+                        {
+                            y: 1.49,
+                            label: "Tipe C"
+                        },
+                        {
+                            y: 6.98,
+                            label: "Tipe D"
+                        },
+                    ]
+                }]
+            };
+            $("#chartContainer").CanvasJSChart(options);
+
+        }
+    </script>
+@endpush
