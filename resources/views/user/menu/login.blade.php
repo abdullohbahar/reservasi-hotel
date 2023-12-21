@@ -27,6 +27,11 @@
                                 Silahkan Melakukan Login
                             </div>
                         @endif
+                        @if (session()->has('success-reset-password'))
+                            <div class="alert alert-success" role="alert">
+                                Password Berhasil Diubah. Silahkan Melakukan Login
+                            </div>
+                        @endif
                         <div class="form-floating mb-3">
                             <input type="email" class="form-control" name="email" id="email" placeholder="email"
                                 required>

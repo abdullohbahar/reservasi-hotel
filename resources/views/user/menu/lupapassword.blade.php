@@ -8,16 +8,27 @@
     <div class="container-fluid">
         <div class="row h-100 align-items-center justify-content-center" style="min-height: 100vh;">
             <div class="col-12 col-sm-8 col-md-6 col-lg-5 col-xl-4">
-                <form action="">
+                <form action="{{ url('send-email') }}" method="POST">
+                    @csrf
                     <div class="bg-secondary rounded p-4 p-sm-5 my-4 mx-3">
                         <div class="d-flex align-items-center justify-content-between mb-3">
                             <a href="{{ url('dashboard/tamudefault') }}" class="">
                                 <h6 class="text-primary"><i class="fa fa-user-edit me-2"></i>Reservasi Online</h6>
                             </a>
-                            <h6>Lupa Passoword</h6>
+                            <h6>Lupa Password</h6>
                         </div>
+                        @if (session()->has('failed'))
+                            <div class="alert alert-danger" role="alert">
+                                {{ session('failed') }}
+                            </div>
+                        @endif
+                        @if (session()->has('success'))
+                            <div class="alert alert-success" role="alert">
+                                Cek email untuk melakukan reset password
+                            </div>
+                        @endif
                         <div class="form-floating mb-4">
-                            <input type="email" class="form-control" name="nama" id="email" placeholder="email"
+                            <input type="email" class="form-control" name="email" id="email" placeholder="email"
                                 required>
                             <label for="email">Email</label>
                         </div>

@@ -1,15 +1,17 @@
 <?php
 
+use App\Models\Resepsionis;
+use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\TamuController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\AdminController;
-use App\Http\Controllers\CekKamarController;
 use App\Http\Controllers\DetailController;
+use App\Http\Controllers\CekKamarController;
 use App\Http\Controllers\DetailKamarController;
 use App\Http\Controllers\ResepsionisController;
-use App\Http\Controllers\TamuController;
 use App\Http\Controllers\TamuDefaultController;
-use App\Http\Controllers\UserController;
-use App\Models\Resepsionis;
-use Illuminate\Support\Facades\Route;
+use App\Mail\ForgotPasswordMail;
 use SebastianBergmann\CodeCoverage\Report\Html\Dashboard;
 
 /*
@@ -34,6 +36,8 @@ Route::get('logout', [UserController::class, 'logout']);
 Route::post('aksilogin/user', [UserController::class, 'aksilogin']);
 Route::get('daftar/user', [UserController::class, 'daftaruserview']);
 Route::get('lupapassword/user', [UserController::class, 'lupapasswordview']);
+Route::get('reset-password', [UserController::class, 'resetpasswordview']);
+Route::post('aksi-reset-password', [UserController::class, 'aksiresetpassword']);
 // User Route Simpan
 Route::post('userstore/tamu', [UserController::class, 'userstore']);
 
@@ -114,3 +118,5 @@ Route::post('storetamu/resepsionis', [ResepsionisController::class, 'rofstore'])
 
 Route::get('get-tipe-kamar-price/{id}', [ResepsionisController::class, 'GetTipeKamarPrice']);
 Route::get('pendapatan-lainnya/resepsionis', [ResepsionisController::class, 'tambahPendapatanLainnya']);
+
+Route::post('/send-email', [UserController::class, 'kirimemail']);

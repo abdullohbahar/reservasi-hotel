@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Admin;
-use App\Models\Resepsionis;
 use App\Models\Tamu;
 use App\Models\User;
+use App\Models\Admin;
+use App\Models\Resepsionis;
 use Illuminate\Http\Request;
+use App\Mail\ForgotPasswordMail;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Mail;
 
 class UserController extends Controller
 {
@@ -82,9 +84,61 @@ class UserController extends Controller
     {
         return view('user/menu/daftar');
     }
+
     public function lupapasswordview()
     {
         return view('user/menu/lupapassword');
+    }
+    public function kirimemail(Request $request)
+    {
+        $tamu = Tamu::where('email', $request->email)->first();
+
+        if (!$tamu) {
+            return redirect()->back()->with('failed', 'Email Tidak Ditemukan');
+        }
+
+        $hashEmail = Hash::make($request->email);
+
+        $tamu->forgot_password_token = $hashEmail;
+        $tamu->save();
+
+        $data = [
+            'name' => $tamu->nama,
+            'body' => 'Klik Link Berikut Jika Ingin Merubah Password http://127.0.0.1:8000/reset-password/?token=' . $hashEmail
+        ];
+
+        Mail::to($request->email)->send(new ForgotPasswordMail($data));
+
+        return redirect()->back()->with('success', 'Cek Email Untuk Melakukan Reset Password');
+    }
+    public function resetpasswordview(Request $request)
+    {
+        $token = $request->token;
+
+        if (!$token) {
+            return redirect('lupapassword/user')->with('failed', 'Ulangi Reset Password');
+        }
+
+        $data = [
+            'token' => $token
+        ];
+
+        return view('user.menu.resetpassword', $data);
+    }
+    public function aksiresetpassword(Request $request)
+    {
+        $token = $request->token;
+
+        $tamu = Tamu::where('forgot_password_token', $token)->first();
+
+        if (!$tamu) {
+            return redirect('lupapassword/user')->with('failed', 'Ulangi Reset Password');
+        }
+
+        $tamu->password = Hash::make($request->password);
+        $tamu->save();
+
+        return redirect('login/user')->with('success', 'Cek Email Untuk Melakukan Reset Password');
     }
 
     public function userstore(Request $request)
