@@ -18,36 +18,66 @@
                     <form action="{{ url('userstore/tamu') }}" method="POST">
                         @csrf
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="nik" id="nik" placeholder="nik"
-                                required>
+                            <input type="text" class="form-control @error('nik') is-invalid @enderror" name="nik"
+                                id="nik" placeholder="nik" value="{{ old('nik') }}" required>
                             <label for="nik">NIK</label>
+                            @error('nik')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="nama" id="nama" placeholder="nama"
-                                required>
+                            <input type="text" class="form-control @error('nama') is-invalid @enderror" name="nama"
+                                id="nama" placeholder="nama" value="{{ old('nama') }}" required>
                             <label for="nama">Nama Lengkap</label>
+                            @error('nama')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
 
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="no_wa" id="no_wa" placeholder="no_wa"
-                                required>
+                            <input type="text" class="form-control @error('no_wa') is-invalid @enderror" name="no_wa"
+                                id="no_wa" placeholder="no_wa" value="{{ old('no_wa') }}" required>
                             <label for="no_wa">No WhatsApps</label>
+                            @error('no_wa')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="text" class="form-control" name="alamat" id="alamat" placeholder="alamat"
-                                required>
+                            <input type="text" class="form-control @error('alamat') is-invalid @enderror" name="alamat"
+                                id="alamat" placeholder="alamat" value="{{ old('alamat') }}" required>
                             <label for="alamat">Alamat</label>
+                            @error('alamat')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="email" class="form-control" name="email" id="email" placeholder="email"
-                                required>
+                            <input type="email" class="form-control  @error('email') is-invalid @enderror" name="email"
+                                id="email" placeholder="email" value="{{ old('email') }}" required>
                             <label for="email">Email</label>
+                            @error('email')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <div class="form-floating mb-4">
-                            <input type="password" class="form-control" name="password" id="password"
-                                placeholder="password" required>
+                            <input type="password" class="form-control @error('password') is-invalid @enderror"
+                                name="password" id="password" placeholder="password" required>
                             <label for="password">Password</label>
+                            @error('password')
+                                <div class="invalid-feedback">
+                                    {{ $message }}
+                                </div>
+                            @enderror
                         </div>
                         <p class="text-center mb-4">Sudah Punya Akun? <a href="{{ url('login/user') }}">Login</a></p>
                         <button type="submit" class="btn btn-primary py-3 w-100 mb-4">Daftar</button>

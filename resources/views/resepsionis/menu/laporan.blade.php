@@ -56,46 +56,7 @@
                     </div>
                 </div>
                 <div class="row mt-5">
-                    <div class="col-sm-12 col-md-12 col-lg-4">
-                        <div class="card">
-                            <div class="card-header">
-                                <h4 class="card-title"><b> Tambah Pendapatan Lainnya</b></h4>
-                            </div>
-                            <div class="card-body">
-                                <form action="{{ url('simpan-pendapatan-lainnya/resepsionis') }}" method="POST"
-                                    enctype="multipart/form-data">
-                                    @csrf
-                                    <div class="row">
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="" class="form-label">Keterangan</label>
-                                                <input type="text" name="keterangan" class="form-control" id=""
-                                                    required>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="" class="form-label">Total Biaya</label>
-                                                <input type="number" name="total_biaya" class="form-control" id=""
-                                                    required>
-                                            </div>
-                                        </div>
-                                        <div class="col-12">
-                                            <div class="form-group">
-                                                <label for="" class="form-label">Bukti</label>
-                                                <input type="file" name="bukti" class="form-control" id=""
-                                                    required>
-                                            </div>
-                                        </div>
-                                        <div class="col-12 mt-3">
-                                            <button class="btn btn-success" style="width: 100%">Simpan</button>
-                                        </div>
-                                    </div>
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-sm-12 col-md-12 col-lg-8">
+                    <div class="col-sm-12 col-md-12 col-lg-12">
                         <div class="card">
                             <div class="card-header">
                                 <h3 class="card-title"><b>Pendapatan Lainnya</b></h3>

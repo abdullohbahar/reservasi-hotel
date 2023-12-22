@@ -107,6 +107,15 @@ class AdminController extends Controller
     //logika simpan resepsionis dari atas:
     public function resepsionisstore(Request $request)
     {
+        $request->validate([
+            'nik' => 'required|unique:tamus,nik|unique:resepsionis,nik',
+            'nama' => 'required',
+            'alamat' => 'required',
+            'no_wa' => 'required|unique:tamus,no_wa|unique:resepsionis,no_wa',
+            'email' => 'required|unique:tamus,email|unique:resepsionis,email|unique:admins,email',
+            'password' => 'required'
+        ]);
+
         $data = [
             'nik' => $request->input('nik'),
             'nama' => $request->input('nama'),
@@ -137,12 +146,41 @@ class AdminController extends Controller
     // Update Resepsionis
     public function updateresepsionis(Request $request)
     {
+        $request->validate([
+            'editnama' => 'required',
+            'editalamat' => 'required',
+            'editnik' => 'required',
+            'editno_wa' => 'required',
+        ]);
+
+        // mengambil data resepsionis sekarang
+        $resepsionis = Resepsionis::findorfail($request->input('id'));
+
+        if ($request->nik != $resepsionis->nik) {
+            $request->validate([
+                'editnik' => 'unique:tamus,nik|unique:resepsionis,nik',
+            ]);
+        }
+
+        if ($request->no_wa != $resepsionis->no_wa) {
+            $request->validate([
+                'editno_wa' => 'required',
+            ]);
+        }
+
+        // if ($request->email != $resepsionis->email) {
+        //     $request->validate([
+        //         'editemail' => 'required|unique:tamus,email|unique:resepsionis,email|unique:admins,email',
+        //     ]);
+        // }
+
         $data = [
-            'nik' => $request->input('nik'),
-            'nama' => $request->input('nama'),
-            'alamat' => $request->input('alamat'),
-            'no_wa' => $request->input('no_wa'),
+            'nik' => $request->input('editnik'),
+            'nama' => $request->input('editnama'),
+            'alamat' => $request->input('editalamat'),
+            'no_wa' => $request->input('editno_wa'),
         ];
+
         Resepsionis::where('id', $request->input('id'))->update($data);
         return redirect('editresepsionis/admin');
     }

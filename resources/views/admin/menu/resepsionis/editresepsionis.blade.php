@@ -19,27 +19,67 @@
                             </h4>
                             <div class="mb-3">
                                 <label for="nik" class="form-label">Nomor Induk Kependudukan</label>
-                                <input type="text" name="nik" class="form-control" id="">
+                                <input type="text" name="nik" class="form-control @error('nik') is-invalid @enderror"
+                                    id="" value="{{ old('nik') }}">
+                                @error('nik')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="nama" class="form-label">Nama Lengkap</label>
-                                <input type="text" name="nama" class="form-control" id="nama">
+                                <input type="text" name="nama"
+                                    class="form-control  @error('nama') is-invalid @enderror" id="nama"
+                                    value="{{ old('nama') }}">
+                                @error('nama')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat Lengkap</label>
-                                <input type="text" name="alamat" class="form-control" id="alamat">
+                                <input type="text" name="alamat"
+                                    class="form-control  @error('alamat') is-invalid @enderror" id="alamat"
+                                    value="{{ old('alamat') }}">
+                                @error('alamat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="no_wa" class="form-label">No WhatsApp</label>
-                                <input type="text" name="no_wa" class="form-control" id="no_wa">
+                                <input type="text" name="no_wa"
+                                    class="form-control @error('no_wa') is-invalid @enderror" id="no_wa"
+                                    value="{{ old('no_wa') }}">
+                                @error('no_wa')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="email" class="form-label">Email</label>
-                                <input type="email" name="email" class="form-control" id="email">
+                                <input type="email" name="email"
+                                    class="form-control @error('email') is-invalid @enderror" id="email"
+                                    value="{{ old('email') }}">
+                                @error('email')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="password" class="form-label">Password</label>
-                                <input type="password" name="password" class="form-control" id="password">
+                                <input type="password" name="password"
+                                    class="form-control @error('password') is-invalid @enderror" id="password">
+                                @error('password')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <p class="text-center" href="">
                                 <button class="btn btn-primary">Simpan</button>
@@ -63,19 +103,43 @@
 
                             <div class="mb-3">
                                 <label for="nik" class="form-label">Nomor Induk Kependudukan</label>
-                                <input type="text" id="editNIK" class="form-control" name="nik">
+                                <input type="text" id="editNIK"
+                                    class="form-control  @error('editnik') is-invalid @enderror" name="editnik">
+                                @error('editnik')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="nik" class="form-label">Nama Lengkap</label>
-                                <input type="text" id="editNama" class="form-control" name="nama">
+                                <input type="text" id="editNama"
+                                    class="form-control @error('editnama') is-invalid @enderror" name="editnama">
+                                @error('editnama')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat Lengkap</label>
-                                <input type="text" id="editAlamat" class="form-control" name="alamat">
+                                <input type="text" id="editAlamat"
+                                    class="form-control @error('editalamat') is-invalid @enderror" name="editalamat">
+                                @error('editalamat')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <div class="mb-3">
                                 <label for="no_wa" class="form-label">No WhatsApp</label>
-                                <input type="text" id="editNoWa" class="form-control" name="no_wa">
+                                <input type="text" id="editNoWa"
+                                    class="form-control @error('editno_wa') is-invalid @enderror" name="editno_wa">
+                                @error('editno_wa')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
                             </div>
                             <p class="text-center" href="">
                                 <button class="btn btn-warning">Update</button>

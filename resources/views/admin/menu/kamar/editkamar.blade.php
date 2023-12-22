@@ -16,8 +16,9 @@
                                 Tambah Kamar
                             </h4>
                             <p class="mt-2">
-                                <select class="form-select" aria-label="Default select example" name="tipe_kamar_id">
-                                    <option selected>Pilih Tipe Kamar</option>
+                                <select class="form-select" aria-label="Default select example" required
+                                    name="tipe_kamar_id">
+                                    <option value="" selected>Pilih Tipe Kamar</option>
                                     @foreach ($tipekamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>
                                     @endforeach
@@ -25,7 +26,7 @@
                             </p>
                             <div class="mt-3">
                                 <label for="no_kamar" class="form-label">No Kamar</label>
-                                <input type="text" class="form-control" name="no_kamar">
+                                <input type="text" class="form-control" name="no_kamar" required>
                             </div>
                             <p class="text-center mt-3" href="">
                                 <button class="btn btn-primary">Simpan</button>
@@ -40,19 +41,19 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="Tipe_kamar" class="form-label">Tipe Kamar</label>
-                                <input type="text" name="tipe_kamar" class="form-control" id="Tipe_kamar">
+                                <input type="text" name="tipe_kamar" class="form-control" required id="Tipe_kamar">
                             </div>
                             <div class="mb-3">
                                 <label for="harga" class="form-label">Harga</label>
-                                <input type="text" name="harga" class="form-control" id="harga">
+                                <input type="text" name="harga" class="form-control" id="harga" required>
                             </div>
                             <div class="mb-3">
                                 <label for="fasilitas" class="form-label">Fasilitas</label>
-                                <input type="text" name="fasilitas" class="form-control" id="fasilitas">
+                                <input type="text" name="fasilitas" class="form-control" id="fasilitas" required>
                             </div>
                             <div class="mb-3">
                                 <label for="gambar" class="form-label">Gambar</label>
-                                <input class="form-control" name="gambar" type="file" id="gambar">
+                                <input class="form-control" name="gambar" type="file" id="gambar" required>
                             </div>
                             <p class="text-center" href="">
                                 <button class="btn btn-primary">Simpan</button>
@@ -64,8 +65,9 @@
                             <h4 class="text-center mt-3 mb-4">
                                 Hapus Kamar
                             </h4>
-                            <select class="form-select" aria-label="Default select example" id="SelectDeleteNoKamar">
-                                <option selected>Pilih Nomor Kamar</option>
+                            <select class="form-select" required aria-label="Default select example"
+                                id="SelectDeleteNoKamar">
+                                <option value="" selected>Pilih Nomor Kamar</option>
                                 @foreach ($no_kamar as $item)
                                     <option value="{{ $item->id }}">{{ $item->no_kamar }}</option>
                                 @endforeach
@@ -79,8 +81,9 @@
                             <h4 class="text-center mt-3 mb-4">
                                 Hapus Tipe Kamar
                             </h4>
-                            <select class="form-select" aria-label="Default select example" id="SelectDeleteTipeKamar">
-                                <option selected>Pilih Tipe Kamar</option>
+                            <select class="form-select" required aria-label="Default select example"
+                                id="SelectDeleteTipeKamar">
+                                <option value="" selected>Pilih Tipe Kamar</option>
                                 @foreach ($tipekamar as $item)
                                     <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>
                                 @endforeach
@@ -107,8 +110,8 @@
                                 Nomor Kamar
                             </h4>
                             <p class="mt-2">
-                                <select class="form-select" name="id" aria-label="Default select example">
-                                    <option selected>Pilih No Kamar</option>
+                                <select class="form-select" name="id" required aria-label="Default select example">
+                                    <option value="" selected>Pilih No Kamar</option>
                                     @foreach ($no_kamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->no_kamar }}</option>
                                     @endforeach
@@ -116,7 +119,7 @@
                             </p>
                             <div class="mt-3">
                                 <label for="no_kamar" class="form-label">Ganti No Kamar</label>
-                                <input type="text" class="form-control" name="no_kamar">
+                                <input type="text" class="form-control" required name="no_kamar">
                             </div>
                             <p class="text-center mt-3" href="">
                                 <button class="btn btn-primary">Update</button>
@@ -130,24 +133,25 @@
                                 Tipe Kamar
                             </h4>
                             <p class="mt-2">
-                                <select id="selectupdatetipekamar" class="form-select" name="id"
+                                <select id="selectupdatetipekamar" required class="form-select" name="id"
                                     aria-label="Default select example">
-                                    <option selected>Pilih Tipe Kamar</option>
+                                    <option value="" selected>Pilih Tipe Kamar</option>
                                     @foreach ($tipekamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>
                                     @endforeach
                                 </select>
                             <div class="mb-3">
                                 <label for="harga" class="form-label">Harga</label>
-                                <input type="text" class="form-control" id="updateharga" name="harga">
+                                <input type="text" class="form-control" required id="updateharga" name="harga">
                             </div>
                             <div class="mb-3">
                                 <label for="fasilitas" class="form-label">Fasilitas</label>
-                                <input type="text" class="form-control" id="updatefasilitas" name="fasilitas">
+                                <input type="text" class="form-control" required id="updatefasilitas"
+                                    name="fasilitas">
                             </div>
                             <div class="mb-3">
                                 <label for="gambar" class="form-label">Gambar</label>
-                                <input class="form-control" type="file" id="updategambar" name="gambar">
+                                <input class="form-control" type="file" required id="updategambar" name="gambar">
                             </div>
                             </p>
                             <p class="text-center mt-3" href="">

@@ -84,6 +84,29 @@ class UserController extends Controller
     {
         return view('user/menu/daftar');
     }
+    public function userstore(Request $request)
+    {
+        $request->validate([
+            'nik' => 'required|unique:tamus,nik|unique:resepsionis,nik',
+            'nama' => 'required',
+            'no_wa' => 'required|unique:tamus,no_wa|unique:resepsionis,no_wa',
+            'email' => 'required|unique:tamus,email|unique:resepsionis,email|unique:admins,email',
+            'password' => 'required'
+        ]);
+
+        $data = [
+            'nik' => $request->input('nik'),
+            'nama' => $request->input('nama'),
+            'no_wa' => $request->input('no_wa'),
+            'email' => $request->input('email'),
+            'alamat' => $request->input('alamat'),
+            'password' => Hash::make($request->input('password')),
+            'gambar' => 'Profil.jpeg'
+        ];
+
+        Tamu::create($data);
+        return redirect('login/user')->with('success', '');
+    }
 
     public function lupapasswordview()
     {
@@ -139,21 +162,5 @@ class UserController extends Controller
         $tamu->save();
 
         return redirect('login/user')->with('success', 'Cek Email Untuk Melakukan Reset Password');
-    }
-
-    public function userstore(Request $request)
-    {
-        $data = [
-            'nik' => $request->input('nik'),
-            'nama' => $request->input('nama'),
-            'no_wa' => $request->input('no_wa'),
-            'email' => $request->input('email'),
-            'alamat' => $request->input('alamat'),
-            'password' => Hash::make($request->input('password')),
-            'gambar' => 'Profil.jpeg'
-        ];
-
-        Tamu::create($data);
-        return redirect('login/user')->with('success', '');
     }
 }

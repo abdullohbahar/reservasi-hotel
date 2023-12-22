@@ -20,19 +20,20 @@
                                 </h3>
                                 <div class="mb-3">
                                     <label for="nik" class="form-label">Nomor Induk Kependudukan (NIK)</label>
-                                    <input type="text" class="form-control" name="nik" aria-describedby="emailHelp">
+                                    <input type="text" class="form-control" required name="nik"
+                                        aria-describedby="emailHelp">
                                 </div>
                                 <div class="mb-3">
                                     <label for="nama" class="form-label">Nama Lengkap</label>
-                                    <input type="text" class="form-control" name="nama">
+                                    <input type="text" class="form-control" required name="nama">
                                 </div>
                                 <div class="mb-3">
                                     <label for="no_wa" class="form-label">No WhatsApp</label>
-                                    <input type="text" class="form-control" name="no_wa">
+                                    <input type="text" class="form-control" required name="no_wa">
                                 </div>
                                 <div class="mb-3">
                                     <label for="email" class="form-label">Email</label>
-                                    <input type="text" class="form-control" name="email">
+                                    <input type="text" class="form-control" required name="email">
                                 </div>
                             </div>
                         </div>
@@ -53,21 +54,22 @@
                                     <input type="date" id="checkout" name="checkout">
                                 </div>
                                 <select class="form-select" name="tipe_kamar" aria-label="Default select example"
-                                    id="tipeKamar">
-                                    <option selected>Pilih Tipe Kamar</option>
+                                    id="tipeKamar" required>
+                                    <option value="" selected>Pilih Tipe Kamar</option>
                                     @foreach ($tipekamar as $item)
                                         <option value="{{ $item->id }}">{{ $item->tipe_kamar }}</option>
                                     @endforeach
                                 </select>
                                 <div class="mt-4">
                                     <label class="form-label">Nomor Kamar</label>
-                                    <input type="no_kamar" id="no_kamar" name="no_kamar" class="form-control" readonly>
+                                    <input type="no_kamar" id="no_kamar" name="no_kamar" class="form-control" required
+                                        readonly>
                                 </div>
                                 <input type="text" name="kamar_id" id="id_kamar" hidden>
                                 <div class="mt-4">
                                     <label class="form-label">Total Biaya</label>
-                                    <input type="text" id="total_biaya" name="total_biaya" class="form-control" readonly
-                                        placeholder="Rp. 0">
+                                    <input type="text" id="total_biaya" name="total_biaya" class="form-control" required
+                                        readonly placeholder="Rp. 0">
                                 </div>
                                 <p class="mt-4 text-center">
                                     <button type="submit" class="btn btn-primary" href="">Reservasi</button>
