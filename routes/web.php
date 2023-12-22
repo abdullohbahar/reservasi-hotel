@@ -120,3 +120,5 @@ Route::get('get-tipe-kamar-price/{id}', [ResepsionisController::class, 'GetTipeK
 Route::get('pendapatan-lainnya/resepsionis', [ResepsionisController::class, 'tambahPendapatanLainnya']);
 
 Route::post('/send-email', [UserController::class, 'kirimemail']);
+
+Route::get('unduh-struk/{id}', [TamuController::class, 'downloadStruk']);

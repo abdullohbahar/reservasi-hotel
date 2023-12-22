@@ -67,7 +67,8 @@
                                                 <a href="{{ url($riwayat->bukti_pembayaran) }}"
                                                     class="btn btn-success pl-5" target="_blank">Lihat
                                                     Bukti Pembayaran</a>
-                                                <button type="button" class="btn btn-info">Unduh Struk Pembayaran</button>
+                                                <a href="{{ url('unduh-struk/' . $riwayat->id) }}" class="btn btn-info">Unduh
+                                                    Struk Pembayaran</a>
                                             </div>
                                         @endif
                                     </td>

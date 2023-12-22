@@ -10,6 +10,7 @@ use App\Models\Transaksi;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Illuminate\Support\Facades\Hash;
+use PDF;
 
 class TamuController extends Controller
 {
@@ -131,7 +132,7 @@ class TamuController extends Controller
 
         $jumlahHari = $endDate->diffInDays($startDate);
 
-        $transaksi = Transaksi::create([
+        Transaksi::create([
             'tgl_transaksi' => $currentDate,
             'metode_pembayaran' => '-',
             'total_biaya' => $request->total_biaya * $jumlahHari,
@@ -247,5 +248,37 @@ class TamuController extends Controller
         ];
 
         return view('tamu/menu/riwayat', $data);
+    }
+
+    public function downloadStruk($id)
+    {
+        $riwayat = Reservasi::join('tipe_kamars', 'reservasis.tipe_kamar_id', '=', 'tipe_kamars.id')
+            ->join('kamars', 'reservasis.kamar_id', '=', 'kamars.id')
+            ->join('transaksis', 'reservasis.id', '=', 'transaksis.reservasi_id')
+            ->join('tamus', 'reservasis.tamu_id', '=', 'tamus.id')
+            ->select(
+                'tipe_kamars.tipe_kamar',
+                'tipe_kamars.harga',
+                'reservasis.*',
+                'kamars.no_kamar',
+                'transaksis.status_pembayaran',
+                'transaksis.bukti_pembayaran',
+                'transaksis.total_biaya',
+                'transaksis.id as transaksi_id',
+                'tamus.nama as nama_tamu'
+            )
+            ->orderBy('reservasis.no_booking', 'desc')
+            ->where('transaksis.reservasi_id', $id)
+            ->first();
+
+        $data = [
+            'riwayat' => $riwayat
+        ];
+
+        $pdf = PDF::loadview('tamu.menu.struk', $data);
+
+        // return view('tamu.menu.struk', $data);
+
+        return $pdf->download('struk.pdf');
     }
 }
