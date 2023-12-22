@@ -54,6 +54,32 @@
             </div>
         </main>
     </div>
+
+    <!-- Modal -->
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Tolak</h5>
+                </div>
+                <div class="modal-body">
+                    <form action="{{ url('tolak-pesan/resepsionis') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="id" id="id">
+                        <div class="row">
+                            <div class="col-12">
+                                <label for="">Alasan</label>
+                                <textarea name="alasan" class="form-control" id="" cols="30" rows="10"></textarea>
+                            </div>
+                            <div class="col-12 mt-3">
+                                <button type="submit" class="btn btn-danger" style="width: 100%">Tolak</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
 
 @push('addons-js')
@@ -100,5 +126,34 @@
                 }
             });
         })
+
+        $("body").on("click", "#tolak", function() {
+
+            $("#exampleModal").modal("show");
+
+            var id = $(this).data("id")
+
+            $("#id").val(id);
+        })
     </script>
+    @if (session()->has('success'))
+        <script>
+            const Toast = Swal.mixin({
+                toast: true,
+                position: 'top-end',
+                showConfirmButton: false,
+                timer: 3000,
+                timerProgressBar: true,
+                didOpen: (toast) => {
+                    toast.addEventListener('mouseenter', Swal.stopTimer)
+                    toast.addEventListener('mouseleave', Swal.resumeTimer)
+                }
+            })
+
+            Toast.fire({
+                icon: 'success',
+                title: '{{ session('success') }}'
+            })
+        </script>
+    @endif
 @endpush

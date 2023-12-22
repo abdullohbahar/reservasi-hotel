@@ -43,18 +43,19 @@ class CekKamarController extends Controller
             }
         }
 
+
         $tipeKamarDB = TipeKamar::join('kamars', 'kamars.tipe_kamar_id', '=', 'tipe_kamars.id')
             ->where('kamars.tipe_kamar_id', '=', $tipeKamar)
             ->whereNotIn('kamars.id', $dataKamar)
             ->select('tipe_kamars.*', 'kamars.*');
 
-        // dd($dataTipeKamar, $dataKamar, $tipeKamarDB->first()->id);
+        // dd($tipeKamar, $dataKamar, $tipeKamarDB->first());
 
         return response()->json([
             'jumlah_kamar' => $tipeKamarDB->count(),
-            'id_kamar' => $tipeKamarDB->first()->id,
-            'nomor_kamar' => $tipeKamarDB->first()->no_kamar,
-            'harga' => $tipeKamarDB->first()->harga
+            'id_kamar' => $tipeKamarDB->first()->id ?? '',
+            'nomor_kamar' => $tipeKamarDB->first()->no_kamar ?? '',
+            'harga' => $tipeKamarDB->first()->harga ?? ''
         ]);
     }
 }

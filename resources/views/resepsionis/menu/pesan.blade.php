@@ -46,9 +46,13 @@
                                                 </td>
                                                 <td>
                                                     <div class="btn-group" role="group" aria-label="Basic example">
-                                                        <a href="{{ url($reservasi->bukti_pembayaran) }}" target="_blank"
-                                                            type="button" class="btn btn-info">Bukti
-                                                            Pembayaran</a>
+                                                        @if ($reservasi->bukti_pembayaran)
+                                                            <a href="{{ url($reservasi->bukti_pembayaran) }}"
+                                                                target="_blank" type="button" class="btn btn-info">Bukti
+                                                                Pembayaran</a>
+                                                        @else
+                                                            -
+                                                        @endif
                                                         <button type="button" class="btn btn-success" id="confirm"
                                                             data-id="{{ $reservasi->id }}"
                                                             {{ $reservasi->status == 'menunggu pembayaran' ? '' : 'hidden' }}>Konfirmasi</button>

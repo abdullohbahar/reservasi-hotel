@@ -2,14 +2,16 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Kamar;
-use App\Models\PendapatanLainnya;
 use App\Models\Presence;
-use App\Models\Resepsionis;
 use App\Models\Reservasi;
 use App\Models\TipeKamar;
+use App\Models\Resepsionis;
 use Illuminate\Http\Request;
+use App\Models\PendapatanLainnya;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class AdminController extends Controller
@@ -32,7 +34,55 @@ class AdminController extends Controller
     // Dashboard Admin :
     public function index()
     {
-        return view('admin/menu/dashboard');
+        // mengambil data pendapatan
+        $queryPendapatan =
+            DB::table('reservasis as r')
+            ->join('transaksis as t', 'r.id', '=', 't.reservasi_id')
+            ->selectRaw('YEAR(r.checkin) as Tahun, 
+                 MONTH(r.checkin) as Bulan, 
+                 COUNT(*) as JumlahPengunjung, 
+                 SUM(t.total_biaya) as TotalBiaya')
+            ->groupByRaw('YEAR(r.checkin), MONTH(r.checkin)')
+            ->orderByRaw('Tahun ASC, Bulan ASC')
+            ->get();
+
+
+        $currentYear = Carbon::now()->year; // Mendapatkan tahun saat ini
+        $currentMonth = Carbon::now()->month; // Mendapatkan bulan saat ini
+
+        $queryChart = DB::table('reservasis as r')
+            ->join('transaksis as t', 'r.id', '=', 't.reservasi_id')
+            ->join('kamars as k', 'r.tipe_kamar_id', '=', 'k.id')
+            ->join('tipe_kamars as tk', 'k.tipe_kamar_id', '=', 'tk.id')
+            ->selectRaw('tk.tipe_kamar as TipeKamar,
+                 YEAR(r.checkin) as Tahun,
+                 MONTH(r.checkin) as Bulan,
+                 COUNT(*) as JumlahPengunjung,
+                 SUM(t.total_biaya) as TotalBiaya')
+            ->whereYear('r.checkin', $currentYear) // Menambahkan kondisi tahun
+            ->whereMonth('r.checkin', $currentMonth) // Menambahkan kondisi bulan
+            ->groupByRaw('tk.tipe_kamar, YEAR(r.checkin), MONTH(r.checkin)')
+            ->orderByRaw('Tahun ASC, Bulan ASC, TipeKamar ASC')
+            ->get();
+
+        $totalBiayaKeseluruhan = $queryChart->sum('TotalBiaya'); // Menghitung total biaya keseluruhan
+
+        $dataCanvasJS = [];
+
+        foreach ($queryChart as $result) {
+            $persentase = ($result->TotalBiaya / $totalBiayaKeseluruhan) * 100;
+            $dataCanvasJS[] = [
+                'y' => round($persentase),
+                'label' => $result->TipeKamar
+            ];
+        }
+
+        $data = [
+            'pendapatan' => $queryPendapatan,
+            'dataCanvasJs' => json_encode($dataCanvasJS)
+        ];
+
+        return view('admin/menu/dashboard', $data);
     }
 
     // - list Resepsionis

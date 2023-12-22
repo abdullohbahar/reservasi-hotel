@@ -126,10 +126,15 @@ class TamuController extends Controller
             'kamar_id' => $request->id_kamar,
         ]);
 
+        $startDate = Carbon::createFromFormat('Y-m-d', $request->checkin);
+        $endDate = Carbon::createFromFormat('Y-m-d', $request->checkout);
+
+        $jumlahHari = $endDate->diffInDays($startDate);
+
         $transaksi = Transaksi::create([
             'tgl_transaksi' => $currentDate,
             'metode_pembayaran' => '-',
-            'total_biaya' => $request->total_biaya,
+            'total_biaya' => $request->total_biaya * $jumlahHari,
             'reservasi_id' => $reservasi->id,
             'tamu_id' => session('user')->id,
             'bukti_pembayaran' => '-',

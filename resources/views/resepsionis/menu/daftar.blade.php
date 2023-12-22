@@ -105,6 +105,8 @@
 
                     if (response.jumlah_kamar < 1) {
                         $("#alert_full").attr("hidden", false)
+                    } else {
+                        $("#alert_full").attr("hidden", true)
                     }
                 }
             })

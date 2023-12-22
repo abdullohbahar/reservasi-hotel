@@ -23,18 +23,19 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr>
-                                            <td>1</td>
-                                            <td>Januari</td>
-                                            <td>2023</td>
-                                            <td>Rp 100.000</td>
-                                        </tr>
-                                        <tr>
-                                            <td>2</td>
-                                            <td>Februari</td>
-                                            <td>2023</td>
-                                            <td>Rp 150.000</td>
-                                        </tr>
+                                        @php
+                                            $no = 1;
+                                            \Carbon\Carbon::setLocale('id');
+                                        @endphp
+                                        @foreach ($pendapatan as $result)
+                                            <tr>
+                                                <td>{{ $no++ }}</td>
+                                                <td>{{ \Carbon\Carbon::parse($result->Bulan)->translatedFormat('F') }}
+                                                </td>
+                                                <td>{{ $result->Tahun }}</td>
+                                                <td>Rp {{ number_format($result->TotalBiaya, 0, '', '.') }}</td>
+                                            </tr>
+                                        @endforeach
                                     </tbody>
                                 </table>
                             </div>
@@ -64,7 +65,6 @@
 
     <script>
         window.onload = function() {
-
             var options = {
                 title: {
                     text: "Pendapatan Tipe Kamar"
@@ -78,27 +78,10 @@
                     legendText: "{label}",
                     indexLabelFontSize: 16,
                     indexLabel: "{label} - {y}%",
-                    dataPoints: [{
-                            y: 48.36,
-                            label: "Tipe A"
-                        },
-                        {
-                            y: 26.85,
-                            label: "Tipe B"
-                        },
-                        {
-                            y: 1.49,
-                            label: "Tipe C"
-                        },
-                        {
-                            y: 6.98,
-                            label: "Tipe D"
-                        },
-                    ]
+                    dataPoints: {!! $dataCanvasJs !!} // Menggunakan data yang dikirimkan dari controller
                 }]
             };
             $("#chartContainer").CanvasJSChart(options);
-
         }
     </script>
 @endpush

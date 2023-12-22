@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use Carbon\Carbon;
 use App\Models\Tamu;
 use App\Models\User;
 use App\Models\Kamar;
@@ -13,6 +14,7 @@ use App\Models\Resepsionis;
 use Illuminate\Http\Request;
 use App\Models\PendapatanLainnya;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 
 class ResepsionisController extends Controller
@@ -35,7 +37,55 @@ class ResepsionisController extends Controller
     // Main Menu
     public function index()
     {
-        return view('resepsionis/menu/dashboard');
+        // mengambil data pendapatan
+        $queryPendapatan =
+            DB::table('reservasis as r')
+            ->join('transaksis as t', 'r.id', '=', 't.reservasi_id')
+            ->selectRaw('YEAR(r.checkin) as Tahun, 
+                 MONTH(r.checkin) as Bulan, 
+                 COUNT(*) as JumlahPengunjung, 
+                 SUM(t.total_biaya) as TotalBiaya')
+            ->groupByRaw('YEAR(r.checkin), MONTH(r.checkin)')
+            ->orderByRaw('Tahun ASC, Bulan ASC')
+            ->get();
+
+
+        $currentYear = Carbon::now()->year; // Mendapatkan tahun saat ini
+        $currentMonth = Carbon::now()->month; // Mendapatkan bulan saat ini
+
+        $queryChart = DB::table('reservasis as r')
+            ->join('transaksis as t', 'r.id', '=', 't.reservasi_id')
+            ->join('kamars as k', 'r.tipe_kamar_id', '=', 'k.id')
+            ->join('tipe_kamars as tk', 'k.tipe_kamar_id', '=', 'tk.id')
+            ->selectRaw('tk.tipe_kamar as TipeKamar,
+                 YEAR(r.checkin) as Tahun,
+                 MONTH(r.checkin) as Bulan,
+                 COUNT(*) as JumlahPengunjung,
+                 SUM(t.total_biaya) as TotalBiaya')
+            ->whereYear('r.checkin', $currentYear) // Menambahkan kondisi tahun
+            ->whereMonth('r.checkin', $currentMonth) // Menambahkan kondisi bulan
+            ->groupByRaw('tk.tipe_kamar, YEAR(r.checkin), MONTH(r.checkin)')
+            ->orderByRaw('Tahun ASC, Bulan ASC, TipeKamar ASC')
+            ->get();
+
+        $totalBiayaKeseluruhan = $queryChart->sum('TotalBiaya'); // Menghitung total biaya keseluruhan
+
+        $dataCanvasJS = [];
+
+        foreach ($queryChart as $result) {
+            $persentase = ($result->TotalBiaya / $totalBiayaKeseluruhan) * 100;
+            $dataCanvasJS[] = [
+                'y' => round($persentase),
+                'label' => $result->TipeKamar
+            ];
+        }
+
+        $data = [
+            'pendapatan' => $queryPendapatan,
+            'dataCanvasJs' => json_encode($dataCanvasJS)
+        ];
+
+        return view('resepsionis/menu/dashboard', $data);
     }
     public function absenresepsionis()
     {
@@ -144,6 +194,7 @@ class ResepsionisController extends Controller
                 'tamus.nama as nama_tamu',
                 'reservasis.status'
             )
+            ->where('reservasis.status', 'menunggu pembayaran')
             ->orderBy('reservasis.no_booking', 'desc')
             ->get();
 
@@ -270,16 +321,21 @@ class ResepsionisController extends Controller
             'tipe_kamar_id' => $request->tipe_kamar,
             'status' => 'full',
             'kamar_id' => $request->kamar_id,
-            // 'resepsionis_id' => '1'
+            'resepsionis_id' => session('user')->id
         ];
 
         // simpan data ke Reservasi table
         $saveReservasi = Reservasi::create($dataReservasi);
 
+        $startDate = Carbon::createFromFormat('Y-m-d', $request->checkin);
+        $endDate = Carbon::createFromFormat('Y-m-d', $request->checkout);
+
+        $jumlahHari = $endDate->diffInDays($startDate);
+
         Transaksi::create([
             'tgl_transaksi' => now(),
             'metode_pembayaran' => 'cash',
-            'total_biaya' => $request->total_biaya,
+            'total_biaya' => $request->total_biaya * $jumlahHari,
             'reservasi_id' => $saveReservasi->id,
             'tamu_id' => $tamu->id,
         ]);
