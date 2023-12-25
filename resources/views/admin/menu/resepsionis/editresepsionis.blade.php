@@ -199,6 +199,10 @@
         $("#deleteResepsionis").on("click", function() {
             var id = $("#selectDeleteResepsionis").val();
 
+            if (!id) {
+                alert('Pilih Resepsionis');
+            }
+
             console.log(id)
 
             $.ajax({

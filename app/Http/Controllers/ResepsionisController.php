@@ -47,6 +47,7 @@ class ResepsionisController extends Controller
                  SUM(t.total_biaya) as TotalBiaya')
             ->groupByRaw('YEAR(r.checkin), MONTH(r.checkin)')
             ->orderByRaw('Tahun ASC, Bulan ASC')
+            ->where('r.status', 'free')
             ->get();
 
 
@@ -66,6 +67,7 @@ class ResepsionisController extends Controller
             ->whereMonth('r.checkin', $currentMonth) // Menambahkan kondisi bulan
             ->groupByRaw('tk.tipe_kamar, YEAR(r.checkin), MONTH(r.checkin)')
             ->orderByRaw('Tahun ASC, Bulan ASC, TipeKamar ASC')
+            ->where('r.status', 'free')
             ->get();
 
         $totalBiayaKeseluruhan = $queryChart->sum('TotalBiaya'); // Menghitung total biaya keseluruhan

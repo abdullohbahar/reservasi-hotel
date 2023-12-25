@@ -69,7 +69,7 @@
                                     data-bs-parent="#sidenavAccordionPages">
                                     <nav class="sb-sidenav-menu-nested nav">
                                         <a class="nav-link" href="{{ url('daftar/resepsionis') }}">Daftar</a>
-                                        <a class="nav-link" href="{{ url('pembayaran/resepsionis') }}">Pembayaran</a>
+                                        {{-- <a class="nav-link" href="{{ url('pembayaran/resepsionis') }}">Pembayaran</a> --}}
                                     </nav>
                                 </div>
                             </nav>
@@ -85,7 +85,8 @@
                             <nav class="sb-sidenav-menu-nested nav">
                                 <a class="nav-link" href="{{ url('absen/resepsionis') }}">Absen</a>
                                 <a class="nav-link" href="{{ url('list/resepsionis') }}">List Tamu Kamar</a>
-                                <a class="nav-link" href="{{ url('pendapatan-lainnya/resepsionis') }}">Tambah Pendapatan
+                                <a class="nav-link" href="{{ url('pendapatan-lainnya/resepsionis') }}">Tambah
+                                    Pendapatan
                                     Lainnya</a>
                             </nav>
                         </div>

@@ -51,11 +51,22 @@ class CekKamarController extends Controller
 
         // dd($tipeKamar, $dataKamar, $tipeKamarDB->first());
 
+        $startDate = Carbon::createFromFormat('Y-m-d', $checkin);
+        $endDate = Carbon::createFromFormat('Y-m-d', $checkout);
+
+        $jumlahHari = $endDate->diffInDays($startDate);
+
+        $harga = $tipeKamarDB->first()->harga ?? '';
+
+        if ($harga) {
+            $harga = $tipeKamarDB->first()->harga * $jumlahHari;
+        }
+
         return response()->json([
             'jumlah_kamar' => $tipeKamarDB->count(),
             'id_kamar' => $tipeKamarDB->first()->id ?? '',
             'nomor_kamar' => $tipeKamarDB->first()->no_kamar ?? '',
-            'harga' => $tipeKamarDB->first()->harga ?? ''
+            'harga' => $harga ?? ''
         ]);
     }
 }

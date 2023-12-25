@@ -30,8 +30,11 @@
                                         @foreach ($pendapatan as $result)
                                             <tr>
                                                 <td>{{ $no++ }}</td>
-                                                <td>{{ \Carbon\Carbon::parse($result->Bulan)->translatedFormat('F') }}
-                                                </td>
+                                                @php
+                                                    $date = date('Y') . '-' . $result->Bulan . '-' . date('d');
+                                                @endphp
+                                                <td>{{ \Carbon\Carbon::parse($date)->translatedFormat('F') }}
+                                                    {{-- <td>{{ \Carbon\Carbon::parse($result->Bulan)->format('m') }} --}}
                                                 <td>{{ $result->Tahun }}</td>
                                                 <td>Rp {{ number_format($result->TotalBiaya, 0, '', '.') }}</td>
                                             </tr>

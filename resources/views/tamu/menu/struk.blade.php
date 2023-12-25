@@ -74,7 +74,7 @@
         </table>
         <div class="dotted-line"></div>
         <div style="text-align: right; margin-top: 6px;">
-            <span>Total Biaya : {{ number_format($riwayat->total_biaya, 0, '', '.') }} </span>
+            <span>Total Biaya : Rp {{ number_format($riwayat->total_biaya, 0, '', '.') }} </span>
         </div>
     </div>
 </body>
