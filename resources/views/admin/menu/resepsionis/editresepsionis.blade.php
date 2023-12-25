@@ -154,7 +154,7 @@
                             Nama Resepsionis
                         </p>
                         <select class="form-select" aria-label="Default select example" id="selectDeleteResepsionis">
-                            <option selected>Pilih Nama Resepsionis</option>
+                            <option value="">Pilih Nama Resepsionis</option>
                             @foreach ($resepsionisedit as $item)
                                 <option value="{{ $item->id }}">{{ $item->nama }}</option>
                             @endforeach
